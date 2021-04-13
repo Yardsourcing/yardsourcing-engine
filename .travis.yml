@@ -11,7 +11,8 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure:
+    secure: BwMQ8bfCYLjdGlPfiJAzCistG7D8LmBnKH2KJiLRZXjSo5l/QqZqR/w2pYZ/pamlGqMc/VlkgPirFgYdkriChI8lKdPgddKoY6WPBMaSSsRIuezLfkqqa0haxERcdoHln/R0TyqPw45dkTxzJZoPsCwH2OG/EWuQbg9xaS9tfRoE3eKP2sdETAFHPi8VG8OoMoExmsV1J4TbEYi3wgZyfGPASRWJpFAgjbt3gYN7t7x4BgSEaQJXZep71rcpjm4teLugIzutQpwWLOQ4HATy5eLCpzfiRwn3wiYNTEAO5v3DqS1ekcojLCv/u+wnE7Ss7Ly4vezu2Br9NBwe7nxb7sPJjlMLfRo7ud89hz+li/LivbyRyUlz8TOB8JY//z4cIeYonHSrW4ePeKM8QCvbFTFNXsG80eW7GFmw87QpLn0uB7jjduy1sWf4T/uirGevESha4EDGIXuV41DQ8ivG7UaXVhIUTVZ0yf83e811WIZfOHHaTtqDUquprM8z1o/6podsbXUcvmhTWFXKe/iwzJxoSNa+SYN/Z4N2Nf/w4WMLZwGb5F/dirpG9rF5Q2AejogUDtyV2u0DfZLiiIlSu+ptlIXzBmHo6vhy26pCIvxtOgLop4eXdhULfApuizB6v64qlCxQ2+L3K0YbUs9wyaZnxtGK0ovTKxIGCOpwaRs=
+  app: powerful-dawn-55301
   on:
     repo: Yardsourcing/yardsourcing-engine
   run: rails db:migrate
