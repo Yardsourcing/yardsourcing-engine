@@ -54,6 +54,127 @@ RSpec.describe "Yards API Endpoints" do
       end
     end
   end
+  describe "CRUD Functionality" do
+    it "can create a new yard" do
+      yard_params = ({
+                      id: 1,
+                      host_id: 1,
+                      name: 'yard',
+                      street_address: '123 Fake St.',
+                      city: 'Denver',
+                      state: 'CO',
+                      zipcode: 12345,
+                      price: 20.00,
+                      description: 'description',
+                      availability: 'availability',
+                      payment: 'venmo',
+                      photo_url_1: 'url1',
+                      photo_url_2: 'url2',
+                      photo_url_3: 'url3'
+                    })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+      created_yard = Yard.last
+
+      expect(response).to be_successful
+      expect(created_yard.host_id).to eq(yard_params[:host_id])
+      expect(created_yard.name).to eq(yard_params[:name])
+      expect(created_yard.street_address).to eq(yard_params[:street_address])
+      expect(created_yard.city).to eq(yard_params[:city])
+      expect(created_yard.state).to eq(yard_params[:state])
+      expect(created_yard.zipcode).to eq(yard_params[:zipcode])
+      expect(created_yard.price).to eq(yard_params[:price])
+      expect(created_yard.description).to eq(yard_params[:description])
+      expect(created_yard.availability).to eq(yard_params[:availability])
+      expect(created_yard.photo_url_1).to eq(yard_params[:photo_url_1])
+      expect(created_yard.photo_url_2).to eq(yard_params[:photo_url_2])
+      expect(created_yard.photo_url_3).to eq(yard_params[:photo_url_3])
+
+      expect(response).to have_http_status(:created)
+      yard = JSON.parse(response.body, symbolize_names: true)
+    end
+
+    it "Won't create a new yard with missing information" do
+      yard_params = ({
+                      id: 1,
+                      street_address: "123 Fake St.",
+                      city: "Denver",
+                      state: "CO",
+                      zipcode: 12345,
+                      price: 20.00,
+                      description: 'description',
+                      availability: 'availability',
+                      payment: 'venmo',
+                      photo_url_1: 'url1',
+                      photo_url_2: 'url2',
+                      photo_url_3: 'url3'
+                    })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "can update an existing yard" do
+      id = create(:yard).id
+      previous_name = Yard.last.name
+      yard_params = { name: "New Name" }
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+      yard = Yard.find_by(id: id)
+      expect(response).to be_successful
+      expect(yard.name).to_not eq(previous_name)
+      expect(yard.name).to eq("New Name")
+    end
+
+    it "can't update an yard that doesn't exist" do
+      yard_params = { name: "New Name" }
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      patch "/api/v1/yards/#{99999999}", headers: headers, params: JSON.generate({yard: yard_params})
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "can't update an existing yard with a bad ID" do
+      id = 1000000
+      yard_params = ({
+                      id: id,
+                      street_address: "123 Fake St.",
+                      city: "Denver",
+                      state: "CO",
+                      zipcode: 12345,
+                      price: 20.00,
+                      description: 'description',
+                      availability: 'availability',
+                      payment: 'venmo',
+                      photo_url_1: 'url1',
+                      photo_url_2: 'url2',
+                      photo_url_3: 'url3'
+                    })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+
+      expect(response).to_not be_successful
+      expect(response.code).to eq("404")
+    end
+
+    it "can destroy an yard" do
+      yard = create(:yard)
+
+      expect(Yard.count).to eq(1)
+
+      delete "/api/v1/yards/#{yard.id}"
+
+      expect(response).to be_successful
+      expect(Yard.count).to eq(0)
+      expect{Yard.find(yard.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
   describe "Yard Search" do
     describe "Happy Path" do
       skip "returns yard records that match the search criteria" do
@@ -136,127 +257,6 @@ RSpec.describe "Yards API Endpoints" do
         expect(yard_details).to be_a(Hash)
         expect(yard_details[:data]).to be_an(Array)
         expect(yard_details[:data].empty?).to eq(true)
-      end
-    end
-    describe "CRUD Functionality" do
-      it "can create a new yard" do
-        yard_params = ({
-                        id: 1,
-                        host_id: 1,
-                        name: 'yard',
-                        street_address: '123 Fake St.',
-                        city: 'Denver',
-                        state: 'CO',
-                        zipcode: 12345,
-                        price: 20.00,
-                        description: 'description',
-                        availability: 'availability',
-                        payment: 'venmo',
-                        photo_url_1: 'url1',
-                        photo_url_2: 'url2',
-                        photo_url_3: 'url3'
-                      })
-        headers = {"CONTENT_TYPE" => "application/json"}
-
-        post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
-        created_yard = Yard.last
-
-        expect(response).to be_successful
-        expect(created_yard.host_id).to eq(yard_params[:host_id])
-        expect(created_yard.name).to eq(yard_params[:name])
-        expect(created_yard.street_address).to eq(yard_params[:street_address])
-        expect(created_yard.city).to eq(yard_params[:city])
-        expect(created_yard.state).to eq(yard_params[:state])
-        expect(created_yard.zipcode).to eq(yard_params[:zipcode])
-        expect(created_yard.price).to eq(yard_params[:price])
-        expect(created_yard.description).to eq(yard_params[:description])
-        expect(created_yard.availability).to eq(yard_params[:availability])
-        expect(created_yard.photo_url_1).to eq(yard_params[:photo_url_1])
-        expect(created_yard.photo_url_2).to eq(yard_params[:photo_url_2])
-        expect(created_yard.photo_url_3).to eq(yard_params[:photo_url_3])
-
-        expect(response).to have_http_status(:created)
-        yard = JSON.parse(response.body, symbolize_names: true)
-      end
-
-      it "Won't create a new yard with missing information" do
-        yard_params = ({
-                        id: 1,
-                        street_address: "123 Fake St.",
-                        city: "Denver",
-                        state: "CO",
-                        zipcode: 12345,
-                        price: 20.00,
-                        description: 'description',
-                        availability: 'availability',
-                        payment: 'venmo',
-                        photo_url_1: 'url1',
-                        photo_url_2: 'url2',
-                        photo_url_3: 'url3'
-                      })
-        headers = {"CONTENT_TYPE" => "application/json"}
-
-        post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
-
-        expect(response).to have_http_status(:not_found)
-      end
-
-      it "can update an existing yard" do
-        id = create(:yard).id
-        previous_name = Yard.last.name
-        yard_params = { name: "New Name" }
-        headers = {"CONTENT_TYPE" => "application/json"}
-
-        patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
-        yard = Yard.find_by(id: id)
-        expect(response).to be_successful
-        expect(yard.name).to_not eq(previous_name)
-        expect(yard.name).to eq("New Name")
-      end
-
-      it "can't update an yard that doesn't exist" do
-        yard_params = { name: "New Name" }
-        headers = {"CONTENT_TYPE" => "application/json"}
-
-        patch "/api/v1/yards/#{99999999}", headers: headers, params: JSON.generate({yard: yard_params})
-        expect(response).to_not be_successful
-        expect(response).to have_http_status(:not_found)
-      end
-
-      it "can't update an existing yard with a bad ID" do
-        id = 1000000
-        yard_params = ({
-                        id: id,
-                        street_address: "123 Fake St.",
-                        city: "Denver",
-                        state: "CO",
-                        zipcode: 12345,
-                        price: 20.00,
-                        description: 'description',
-                        availability: 'availability',
-                        payment: 'venmo',
-                        photo_url_1: 'url1',
-                        photo_url_2: 'url2',
-                        photo_url_3: 'url3'
-                      })
-        headers = {"CONTENT_TYPE" => "application/json"}
-
-        patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
-
-        expect(response).to_not be_successful
-        expect(response.code).to eq("404")
-      end
-
-      it "can destroy an yard" do
-        yard = create(:yard)
-
-        expect(Yard.count).to eq(1)
-
-        delete "/api/v1/yards/#{yard.id}"
-
-        expect(response).to be_successful
-        expect(Yard.count).to eq(0)
-        expect{Yard.find(yard.id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
