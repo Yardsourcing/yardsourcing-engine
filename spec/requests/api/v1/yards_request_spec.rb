@@ -43,7 +43,7 @@ RSpec.describe "Yards API Endpoints" do
       end
     end
     describe "Edge Case Path" do
-      skip "should return an error when a string is passed in the URL" do
+      it "should return an error when a string is passed in the URL" do
 
         get "/api/v1/yards/abcdefghijk"
         expect(response.status).to eq(400)
