@@ -34,7 +34,9 @@
         "description": "This yard is green and 1200 sf",
         "payment": "venmo/paypal infomraiton?",
         "availability": "weekends and weekdays after 5pm",
-        "photo_url_1": "https:picture1.org"
+        "photo_url_1": "https:picture1.org",
+        "photo_url_2": "",
+        "photo_url_3": ""
       }
     }
   }
@@ -54,7 +56,9 @@
       "description": "This yard is cement",
       "payment": "venmo/paypal infomraiton?",
       "availability": "mornings",
-      "photo_url_1": "https:picture1.org"
+      "photo_url_1": "https:picture1.org",
+      "photo_url_2": "",
+      "photo_url_3": ""
       }
     }
   }
@@ -75,7 +79,9 @@
       "description": "This yard is cement",
       "payment": "venmo/paypal infomraiton?",
       "availability": "mornings",
-      "photo_url_1": "https:picture1.org"
+      "photo_url_1": "https:picture1.org",
+      "photo_url_2": "",
+      "photo_url_3": ""
       }
     }
   }
@@ -106,7 +112,9 @@
             "description": "This yard is green and 1200 sf",
             "payment": "venmo/paypal infomraiton?",
             "availability": "weekends and weekdays after 5pm",
-            "photo_url_1": "https:picture1.org"
+            "photo_url_1": "https:picture1.org",
+            "photo_url_2": "",
+            "photo_url_3": ""
           }
       },
       {
@@ -123,7 +131,9 @@
             "description": "This yard is a garden oasis to transport you out of the city",
             "payment": "venmo/paypal infomraiton?",
             "availability": "all day every day",
-            "photo_url_1": "https:picture12.org"
+            "photo_url_1": "https:picture12.org",
+            "photo_url_2": "",
+            "photo_url_3": ""
           }
       },
       {
@@ -140,7 +150,9 @@
             "price": 15.50,
             "payment": "venmo/paypal infomraiton?",
             "availability": "please contact for availability",
-            "photo_url_1": "https:picture31.org"
+            "photo_url_1": "https:picture31.org",
+            "photo_url_2": "",
+            "photo_url_3": ""
           }
       }
     ]
@@ -167,7 +179,9 @@
             "description": "This yard is green and 1200 sf",
             "payment": "venmo/paypal infomraiton?",
             "availability": "weekends and weekdays after 5pm",
-            "photo_url_1": "https:picture1.org"
+            "photo_url_1": "https:picture1.org",
+            "photo_url_2": "",
+            "photo_url_3": ""
           }
       },
       {
@@ -184,7 +198,9 @@
             "description": "This yard is a garden oasis to transport you out of the city",
             "payment": "venmo/paypal infomraiton?",
             "availability": "all day every day",
-            "photo_url_1": "https:picture12.org"
+            "photo_url_1": "https:picture12.org",
+            "photo_url_2": "",
+            "photo_url_3": ""
           }
       },
       {
@@ -201,7 +217,9 @@
             "price": 15.50,
             "payment": "venmo/paypal infomraiton?",
             "availability": "please contact for availability",
-            "photo_url_1": "https:picture31.org"
+            "photo_url_1": "https:picture31.org",
+            "photo_url_2": "",
+            "photo_url_3": ""
           }
       }
     ]
