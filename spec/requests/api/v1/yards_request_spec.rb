@@ -200,6 +200,52 @@ RSpec.describe "Yards API Endpoints" do
 
         expect(response).to have_http_status(:not_found)
       end
+
+      it "can update an existing yard" do
+        id = create(:yard).id
+        previous_name = Yard.last.name
+        yard_params = { name: "New Name" }
+        headers = {"CONTENT_TYPE" => "application/json"}
+
+        patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+        yard = Yard.find_by(id: id)
+        expect(response).to be_successful
+        expect(yard.name).to_not eq(previous_name)
+        expect(yard.name).to eq("New Name")
+      end
+
+      it "can't update an yard that doesn't exist" do
+        yard_params = { name: "New Name" }
+        headers = {"CONTENT_TYPE" => "application/json"}
+
+        patch "/api/v1/yards/#{99999999}", headers: headers, params: JSON.generate({yard: yard_params})
+        expect(response).to_not be_successful
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "can't update an existing yard with a bad ID" do
+        id = 1000000
+        yard_params = ({
+                        id: id,
+                        street_address: "123 Fake St.",
+                        city: "Denver",
+                        state: "CO",
+                        zipcode: 12345,
+                        price: 20.00,
+                        description: 'description',
+                        availability: 'availability',
+                        payment: 'venmo',
+                        photo_url_1: 'url1',
+                        photo_url_2: 'url2',
+                        photo_url_3: 'url3'
+                      })
+        headers = {"CONTENT_TYPE" => "application/json"}
+
+        patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+
+        expect(response).to_not be_successful
+        expect(response.code).to eq("404")
+      end
     end
   end
 end

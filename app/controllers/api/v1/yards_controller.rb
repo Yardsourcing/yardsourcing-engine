@@ -15,6 +15,12 @@ class Api::V1::YardsController < ApplicationController
     render json: YardSerializer.new(yard), status: :created
   end
 
+  def update
+    yard = Yard.find(params[:id])
+    yard.update!(yard_params)
+    render json: YardSerializer.new(yard)
+  end
+
   private
 
   def validate_params
