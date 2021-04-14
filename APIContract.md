@@ -8,12 +8,15 @@
 | POST | /api/v1/yards  | Create a new yard | [json](#create-a-yard) |
 | DELETE | /api/v1/yards/:yard_id  | Delete a yard | [details](#delete-a-yard) |
 | PUT | /api/v1/yards/:yard_id | Update a yard | [json](#update-a-yard)
-| GET | /api/v1/bookings/bookings_by_status?status=STATUS&user=USER_ID | Get all bookings for a user that have a particular status| [json](#get-user-bookings-by-status) |
-| GET | /api/v1/yards/yard_search?location=ZIP&purposes=PURPOSE+NAME  | Get yards that match search criteria. Optional User_id input | [json](#yard-search) |
-| GET | /api/v1/yards/host/yards?user_id=USER_ID  | Get yards that belong to a host | [json](#user-yards) |
+| GET | /api/v1/hosts/host_id/bookings?status=STATUS | Get all bookings for a host that have a particular status| [json](#get-user-bookings-by-status) |
+| GET | /api/v1/renters/renter_id/bookings?status=STATUS | Get all bookings for a renter that have a particular status| [json](#get-user-bookings-by-status) |
+| GET | /api/v1/yards?location=ZIP&purposes=PURPOSE+NAME&OTHER+PURPOSE+NAME  | Get yards that match search criteria. | [json](#yard-search) |
+| GET | /api/v1/hosts/host_id/yards  | Get yards that belong to a host | [json](#user-yards) |
+| GET | /api/v1/yards/:yard_id/bookings | Get bookings that belong to a specific yard | [json](#yard-bookings) |
 | POST | /api/v1/bookings | Create a new booking | [json](#create-a-booking) |
-| GET | /api/v1/bookings/:booking_id | Get booking show page | [json](#booking-details)
+| GET | /api/v1/bookings/:booking_id | Get booking show page | [json](#booking-details) |
 | DELETE | /api/v1/bookings/:booking_id | Delete a new booking | [details](#delete-a-booking) |
+
 
 ## JSON Responses
 ## Yard Details
@@ -161,7 +164,7 @@
 
 ## Yard Search
 (by location, purpose. Optional parameter for host user_id)
-`GET /api/v1/yards/yard_search?location=19125&purposes=pet+rental`
+`GET /api/v1/yards/yard_search?location=19125&purposes=pet+rental&hobby+rental`
   ```json
   {
     "data": [
@@ -226,8 +229,8 @@
   }
   ```
 
-## User Bookings By Status
-`GET /api/v1/bookings/bookings_by_status?status=approved&user=1`
+## Host Bookings By Status
+`GET /api/v1/hosts/host_id/bookings?status=approved`
   ```json
   {
     "data": [
@@ -273,6 +276,103 @@
     ]
   }
   ```
+
+## Renter Bookings By Status
+`GET /api/v1/renters/renter_id/bookings?status=approved`
+  ```json
+  {
+    "data": [
+      {
+        "id": "1",
+          "type": "booking",
+          "attributes": {
+            "status": "approved",
+            "yard_id": 1,
+            "booking_name": "Dog Play Date",
+            "date": "how do we want to pass date info?",
+            "time": "how do we want to pass time info?",
+            "duration": 120,
+            "description": "Renting a yard to run my pup and their best friend for 2 hours"
+          }
+      },
+      {
+        "id": "2",
+        "type": "booking",
+        "attributes": {
+            "status": "approved",
+            "yard_id": 1,
+            "booking_name": "Picnic",
+            "date": "how do we want to pass date info?",
+            "time": "how do we want to pass time info?",
+            "duration": 180,
+            "description": "Renting for a picnic for Galentine's Day!"
+          }
+      },
+      {
+        "id": "3",
+        "type": "booking",
+        "attributes": {
+            "status": "approved",
+            "yard_id": 2,
+            "booking_name": "Badmitton Game",
+            "date": "how do we want to pass date info?",
+            "time": "how do we want to pass time info?",
+            "duration": 60,
+            "description": "Renting the yard to play a championship game of badmitton"
+          }
+      }
+    ]
+  }
+  ```
+
+## Yard Bookings
+`GET /api/v1/yards/:yard_id/bookings`
+`GET /api/v1/yards/1/bookings`
+```json
+{
+  "data": [
+    {
+      "id": "1",
+        "type": "booking",
+        "attributes": {
+          "status": "approved",
+          "yard_id": 1,
+          "booking_name": "Dog Play Date",
+          "date": "how do we want to pass date info?",
+          "time": "how do we want to pass time info?",
+          "duration": 120,
+          "description": "Renting a yard to run my pup and their best friend for 2 hours"
+        }
+    },
+    {
+      "id": "2",
+      "type": "booking",
+      "attributes": {
+          "status": "approved",
+          "yard_id": 1,
+          "booking_name": "Picnic",
+          "date": "how do we want to pass date info?",
+          "time": "how do we want to pass time info?",
+          "duration": 180,
+          "description": "Renting for a picnic for Galentine's Day!"
+        }
+    },
+    {
+      "id": "3",
+      "type": "booking",
+      "attributes": {
+          "status": "approved",
+          "yard_id": 1,
+          "booking_name": "Badmitton Game",
+          "date": "how do we want to pass date info?",
+          "time": "how do we want to pass time info?",
+          "duration": 60,
+          "description": "Renting the yard to play a championship game of badmitton"
+        }
+    }
+  ]
+}
+```
 
 ## Booking Details
 `GET /api/v1/bookings/:booking_id`
