@@ -21,6 +21,11 @@ class Api::V1::YardsController < ApplicationController
     render json: YardSerializer.new(yard)
   end
 
+  def destroy
+    yard = Yard.find(params[:id])
+    render json: Yard.destroy(params[:id])
+  end
+
   private
 
   def validate_params

@@ -246,6 +246,18 @@ RSpec.describe "Yards API Endpoints" do
         expect(response).to_not be_successful
         expect(response.code).to eq("404")
       end
+
+      it "can destroy an yard" do
+        yard = create(:yard)
+
+        expect(Yard.count).to eq(1)
+
+        delete "/api/v1/yards/#{yard.id}"
+
+        expect(response).to be_successful
+        expect(Yard.count).to eq(0)
+        expect{Yard.find(yard.id)}.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 end
