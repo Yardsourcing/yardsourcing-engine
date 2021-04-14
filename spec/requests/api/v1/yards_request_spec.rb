@@ -31,14 +31,14 @@ RSpec.describe "Yards API Endpoints" do
       end
     end
     describe "Sad Path" do
-      skip "should return an empty array when there is no matching yard" do
+      it "should return an empty array when there is no matching yard" do
 
         get "/api/v1/yards/1000000000"
         expect(response).to be_successful
 
         yard_details = JSON.parse(response.body, symbolize_names:true)
         expect(yard_details).to be_a(Hash)
-        expect(yard_details[:data]).to be_an(Array)
+        expect(yard_details[:data]).to be_an(Hash)
         expect(yard_details[:data].empty?).to eq(true)
       end
     end

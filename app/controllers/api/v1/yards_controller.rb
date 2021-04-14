@@ -1,6 +1,11 @@
 class Api::V1::YardsController < ApplicationController
 
   def show
-    render json: YardSerializer.new(Yard.find(params[:id]))
+    yard = Yard.where(id: params[:id])
+    if yard.empty?
+      render json: NullSerializer.new
+    else
+      render json: YardSerializer.new(yard)
+    end
   end
 end
