@@ -48,7 +48,7 @@
 ## Create a Yard
 `POST /api/v1/yards`
   ```json
-  {
+    {
       "host_id": 1,
       "name": "Mike's Semi-Awesome Yard",
       "street_address": "124 Cook Street",
@@ -62,16 +62,14 @@
       "photo_url_1": "https:picture1.org",
       "photo_url_2": "",
       "photo_url_3": ""
-      }
     }
-  }
   ```
   Response will be the same as the [Yard Details Response](#yard-details)
 
 ## Update a Yard
 `POST /api/v1/yards/:yard_id`
   ```json
-  {
+    {
       "host_id": 1,
       "name": "Mike's Semi-Awesome Yard",
       "street_address": "124 Cook Street",
@@ -85,9 +83,7 @@
       "photo_url_1": "https:picture1.org",
       "photo_url_2": "",
       "photo_url_3": ""
-      }
     }
-  }
   ```
   Response will be the same as the [Yard Details Response](#yard-details)
 
@@ -377,7 +373,8 @@
 ## Booking Details
 `GET /api/v1/bookings/:booking_id`
   ```json
-    "data": {
+  {
+      "data": {
         "id": "1",
         "type": "booking",
         "attributes": {
@@ -403,9 +400,7 @@
     "time": "5:00PM",
     "duration": 120,
     "description": "Renting a yard to run my pup and their best friend for 2 hours"
-        }
-      }
-    }
+  }
   ```
 
 ## Delete a Booking
