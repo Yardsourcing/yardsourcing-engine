@@ -1,5 +1,5 @@
 class Api::V1::YardsController < ApplicationController
-  before_action :validate_params
+  before_action :validate_params, only: :show
 
   def show
     yard = Yard.where(id: params[:id])
@@ -10,6 +10,11 @@ class Api::V1::YardsController < ApplicationController
     end
   end
 
+  def create
+    yard = Yard.create!(yard_params)
+    render json: YardSerializer.new(yard), status: :created
+  end
+
   private
 
   def validate_params
@@ -17,4 +22,20 @@ class Api::V1::YardsController < ApplicationController
       render json: {error: "String not accepted as id"}, status: :bad_request
     end
   end
+
+  def yard_params
+  params.require(:yard).permit(:host_id,
+                              :name,
+                              :street_address,
+                              :city,
+                              :state,
+                              :zipcode,
+                              :price,
+                              :description,
+                              :availability,
+                              :payment,
+                              :photo_url_1,
+                              :photo_url_2,
+                              :photo_url_3)
+end
 end
