@@ -6,7 +6,7 @@ RSpec.describe "Yards API Endpoints" do
       it "should return a json response with a specific yards details" do
         yard = create(:yard)
 
-        get "api/v1/yards/#{yard.id}"
+        get "/api/v1/yards/#{yard.id}"
         expect(response).to be_successful
 
         yard_details = JSON.parse(response.body, symbolize_names:true)
@@ -14,7 +14,7 @@ RSpec.describe "Yards API Endpoints" do
         expect(yard_details).to be_a(Hash)
         expect(yard_details[:data]).to be_a(Hash)
         expect(yard_details[:data][:attributes]).to be_a(Hash)
-        expect(yard_details[:data][:attributes].count).to eq(11)
+        expect(yard_details[:data][:attributes].count).to eq(13)
         expect(yard_details[:data][:attributes]).to have_key(:host_id)
         expect(yard_details[:data][:attributes]).to have_key(:name)
         expect(yard_details[:data][:attributes]).to have_key(:street_address)
@@ -33,7 +33,7 @@ RSpec.describe "Yards API Endpoints" do
     describe "Sad Path" do
       skip "should return an empty array when there is no matching yard" do
 
-        get "api/v1/yards/1000000000"
+        get "/api/v1/yards/1000000000"
         expect(response).to be_successful
 
         yard_details = JSON.parse(response.body, symbolize_names:true)
@@ -45,7 +45,7 @@ RSpec.describe "Yards API Endpoints" do
     describe "Edge Case Path" do
       skip "should return an error when a string is passed in the URL" do
 
-        get "api/v1/yards/abcdefghijk"
+        get "/api/v1/yards/abcdefghijk"
         expect(response.status).to eq(400)
 
         yard_details = JSON.parse(response.body, symbolize_names:true)
@@ -138,7 +138,7 @@ RSpec.describe "Yards API Endpoints" do
               skip "should return a json response with a specific yards details" do
                 yard = create(:yard)
 
-                get "api/v1/yards/#{yard.id}"
+                get "/api/v1/yards/#{yard.id}"
                 expect(response).to be_successful
 
                 yard_details = JSON.parse(response.body, symbolize_names:true)
@@ -165,7 +165,7 @@ RSpec.describe "Yards API Endpoints" do
             describe "Sad Path" do
               skip "should return an empty array when there is no matching yard" do
 
-                get "api/v1/yards/1000000000"
+                get "/api/v1/yards/1000000000"
                 expect(response).to be_successful
 
                 yard_details = JSON.parse(response.body, symbolize_names:true)
@@ -177,7 +177,7 @@ RSpec.describe "Yards API Endpoints" do
             describe "Edge Case Path" do
               skip "should return an error when a string is passed in the URL" do
 
-                get "api/v1/yards/abcdefghijk"
+                get "/api/v1/yards/abcdefghijk"
                 expect(response.status).to eq(400)
 
                 yard_details = JSON.parse(response.body, symbolize_names:true)
