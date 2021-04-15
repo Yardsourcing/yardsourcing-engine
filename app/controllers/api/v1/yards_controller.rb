@@ -25,8 +25,18 @@ class Api::V1::YardsController < ApplicationController
 
   def update
     yard = Yard.find(params[:id])
-    yard.update!(yard_params)
-    render json: YardSerializer.new(yard)
+    if params[:yard][:purposes] || yard.purposes
+      yard.update!(yard_params)
+      params[:yard][:purposes]&.each do |yard_purpose|
+        if yard.purposes.none?{ |purpose| purpose.id == yard_purpose}
+          YardPurpose.create!(yard_id: yard.id, purpose_id: yard_purpose)
+        end
+      end
+      render json: YardSerializer.new(yard)
+    else
+      error = "You must select at least one purpose"
+      render_error(error, :not_acceptable)
+    end
   end
 
   def destroy
@@ -35,7 +45,6 @@ class Api::V1::YardsController < ApplicationController
   end
 
   private
-
   def validate_params
     if params[:id].to_i == 0
       render json: {error: "String not accepted as id"}, status: :bad_request
