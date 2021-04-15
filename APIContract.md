@@ -4,7 +4,9 @@
 
 | HTTP verbs | Paths  | Used for | Output |
 | ---------- | ------ | -------- | ------:|
+| GET | /api/v1/purposes | Get the available purposes | [json](#purposes) |
 | GET | /api/v1/yards/:yard_id  | Get a yard's show page | [json](#yard-details) |
+| GET | /api/v1/yards/:yard_id/purposes  | Get a yard's purposes | [json](#yard-purposes) |
 | POST | /api/v1/yards  | Create a new yard | [json](#create-a-yard) |
 | DELETE | /api/v1/yards/:yard_id  | Delete a yard | [details](#delete-a-yard) |
 | PUT | /api/v1/yards/:yard_id | Update a yard | [json](#update-a-yard)
@@ -19,6 +21,37 @@
 
 
 ## JSON Responses
+
+## Purposes
+`GET /api/v1/purposes`
+  ```json
+  {
+    "data": [
+      {
+        "id": "1",
+          "type": "purpose",
+          "attributes": {
+            "name": "Pet Rental",
+          }
+      },
+      {
+        "id": "2",
+        "type": "purpose",
+          "attributes": {
+            "name": "Party Rental",
+          }
+      },
+      {
+        "id": "3",
+        "type": "yard",
+          "attributes": {
+            "name": "Hobby Rental",
+          }
+      }
+    ]
+  }
+  ```
+
 ## Yard Details
 `GET /api/v1/yards/:yard_id`
   ```json
@@ -27,7 +60,7 @@
       "id": "1",
       "type": "yard",
       "attributes": {
-        "host_id": 1,
+        "host_id": "1",
         "name": "Mike's Awesome Yard",
         "street_address": "123 Baker Street",
         "city": "Philadelphia",
@@ -39,9 +72,51 @@
         "availability": "weekends and weekdays after 5pm",
         "photo_url_1": "https:picture1.org",
         "photo_url_2": "",
-        "photo_url_3": ""
+        "photo_url_3": "",
+        "purposes": {
+          "data": [
+            {
+              "id": "1",
+              "type": "purpose",
+              "attributes": {
+                "name": "Pet Rental",
+              }
+            },
+            {
+              "id": "2",
+              "type": "purpose",
+              "attributes": {
+                "name": "Party Rental",
+              }
+            }
+          ]
+        }
+        }
       }
     }
+  }
+  ```
+
+## Yard Purposes
+  `GET /api/v1/purposes`
+  ```json
+  {
+    "data": [
+      {
+        "id": "1",
+          "type": "purpose",
+          "attributes": {
+            "name": "Pet Rental",
+          }
+      },
+      {
+        "id": "2",
+        "type": "purpose",
+          "attributes": {
+            "name": "Party Rental",
+          }
+      }
+    ]
   }
   ```
 
@@ -61,7 +136,8 @@
       "availability": "mornings",
       "photo_url_1": "https:picture1.org",
       "photo_url_2": "",
-      "photo_url_3": ""
+      "photo_url_3": "",
+      "purposes": [1, 2, 3]
     }
   ```
   Response will be the same as the [Yard Details Response](#yard-details)
@@ -82,7 +158,8 @@
       "availability": "mornings",
       "photo_url_1": "https:picture1.org",
       "photo_url_2": "",
-      "photo_url_3": ""
+      "photo_url_3": "",
+      "purposes": [1, 2]
     }
   ```
   Response will be the same as the [Yard Details Response](#yard-details)
@@ -101,7 +178,7 @@
         "id": "1",
           "type": "yard",
           "attributes": {
-            "host_id": 1,
+            "host_id": "1",
             "name": "Mike's Awesome Yard",
             "street_address": "123 Baker Street",
             "city": "Philadelphia",
@@ -113,14 +190,32 @@
             "availability": "weekends and weekdays after 5pm",
             "photo_url_1": "https:picture1.org",
             "photo_url_2": "",
-            "photo_url_3": ""
+            "photo_url_3": "",
+            "purposes": {
+              "data": [
+                {
+                  "id": "1",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Pet Rental",
+                  }
+                },
+                {
+                  "id": "2",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Party Rental",
+                  }
+                }
+              ]
+            }
           }
       },
       {
         "id": "2",
         "type": "yard",
           "attributes": {
-            "host_id": 1,
+            "host_id": "1",
             "name": "Bohem Garden",
             "street_address": "123 Bohem Street",
             "city": "Philadelphia",
@@ -132,14 +227,25 @@
             "availability": "all day every day",
             "photo_url_1": "https:picture12.org",
             "photo_url_2": "",
-            "photo_url_3": ""
+            "photo_url_3": "",
+            "purposes": {
+              "data": [
+                {
+                  "id": "1",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Pet Rental",
+                  }
+                }
+              ]
+            }
           }
       },
       {
         "id": "3",
         "type": "yard",
           "attributes": {
-            "host_id": 1,
+            "host_id": "1",
             "name": "Rooftop Party",
             "street_address": "123 Market Street",
             "city": "Philadelphia",
@@ -151,7 +257,18 @@
             "availability": "please contact for availability",
             "photo_url_1": "https:picture31.org",
             "photo_url_2": "",
-            "photo_url_3": ""
+            "photo_url_3": "",
+            "purposes": {
+              "data": [
+                {
+                  "id": "1",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Pet Rental",
+                  }
+                }
+              ]
+            }
           }
       }
     ]
@@ -159,8 +276,7 @@
   ```
 
 ## Yard Search
-(by location, purpose. Optional parameter for host user_id)
-`GET /api/v1/yards/yard_search?location=19125&purposes=pet+rental&hobby+rental`
+`GET /api/v1/yards?location=19125&purposes=pet+rental&pet+rental`
   ```json
   {
     "data": [
@@ -180,7 +296,25 @@
             "availability": "weekends and weekdays after 5pm",
             "photo_url_1": "https:picture1.org",
             "photo_url_2": "",
-            "photo_url_3": ""
+            "photo_url_3": "",
+            "purposes": {
+              "data": [
+                {
+                  "id": "1",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Pet Rental",
+                  }
+                },
+                {
+                  "id": "2",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Party Rental",
+                  }
+                }
+              ]
+            }
           }
       },
       {
@@ -199,7 +333,18 @@
             "availability": "all day every day",
             "photo_url_1": "https:picture12.org",
             "photo_url_2": "",
-            "photo_url_3": ""
+            "photo_url_3": "",
+            "purposes": {
+              "data": [
+                {
+                  "id": "1",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Pet Rental",
+                  }
+                }
+              ]
+            }
           }
       },
       {
@@ -218,7 +363,18 @@
             "availability": "please contact for availability",
             "photo_url_1": "https:picture31.org",
             "photo_url_2": "",
-            "photo_url_3": ""
+            "photo_url_3": "",
+            "purposes": {
+              "data": [
+                {
+                  "id": "1",
+                  "type": "purpose",
+                  "attributes": {
+                    "name": "Pet Rental",
+                  }
+                }
+              ]
+            }
           }
       }
     ]
@@ -226,7 +382,7 @@
   ```
 
 ## Host Bookings By Status
-`GET /api/v1/hosts/host_id/bookings?status=approved`
+`GET /api/v1/hosts/:host_id/bookings?status=approved`
   ```json
   {
     "data": [
@@ -235,10 +391,10 @@
           "type": "booking",
           "attributes": {
             "status": "approved",
-            "yard_id": 1,
+            "yard_id": "1",
             "booking_name": "Dog Play Date",
-            "date": "how do we want to pass date info?",
-            "time": "how do we want to pass time info?",
+            "date": "2021-06-20",
+            "time": "1800",
             "duration": 120,
             "description": "Renting a yard to run my pup and their best friend for 2 hours"
           }
@@ -248,10 +404,10 @@
         "type": "booking",
         "attributes": {
             "status": "approved",
-            "yard_id": 1,
+            "yard_id": "1",
             "booking_name": "Picnic",
-            "date": "how do we want to pass date info?",
-            "time": "how do we want to pass time info?",
+            "date": "2021-06-20",
+            "time": "1500",
             "duration": 180,
             "description": "Renting for a picnic for Galentine's Day!"
           }
@@ -261,10 +417,10 @@
         "type": "booking",
         "attributes": {
             "status": "approved",
-            "yard_id": 2,
+            "yard_id": "2",
             "booking_name": "Badmitton Game",
-            "date": "how do we want to pass date info?",
-            "time": "how do we want to pass time info?",
+            "date": "2021-06-20",
+            "time": "1430",
             "duration": 60,
             "description": "Renting the yard to play a championship game of badmitton"
           }
@@ -274,7 +430,7 @@
   ```
 
 ## Renter Bookings By Status
-`GET /api/v1/renters/renter_id/bookings?status=approved`
+`GET /api/v1/renters/:renter_id/bookings?status=approved`
   ```json
   {
     "data": [
@@ -283,10 +439,10 @@
           "type": "booking",
           "attributes": {
             "status": "approved",
-            "yard_id": 1,
+            "yard_id": "1",
             "booking_name": "Dog Play Date",
-            "date": "how do we want to pass date info?",
-            "time": "how do we want to pass time info?",
+            "date": "2021-06-20",
+            "time": "1800",
             "duration": 120,
             "description": "Renting a yard to run my pup and their best friend for 2 hours"
           }
@@ -296,10 +452,10 @@
         "type": "booking",
         "attributes": {
             "status": "approved",
-            "yard_id": 1,
+            "yard_id": "1",
             "booking_name": "Picnic",
-            "date": "how do we want to pass date info?",
-            "time": "how do we want to pass time info?",
+            "date": "2021-06-20",
+            "time": "1730",
             "duration": 180,
             "description": "Renting for a picnic for Galentine's Day!"
           }
@@ -309,10 +465,10 @@
         "type": "booking",
         "attributes": {
             "status": "approved",
-            "yard_id": 2,
+            "yard_id": "2",
             "booking_name": "Badmitton Game",
-            "date": "how do we want to pass date info?",
-            "time": "how do we want to pass time info?",
+            "date": "2021-06-20",
+            "time": "1800",
             "duration": 60,
             "description": "Renting the yard to play a championship game of badmitton"
           }
@@ -324,51 +480,51 @@
 ## Yard Bookings
 `GET /api/v1/yards/:yard_id/bookings`
 `GET /api/v1/yards/1/bookings`
-```json
-{
-  "data": [
-    {
-      "id": "1",
+  ```json
+  {
+    "data": [
+      {
+        "id": "1",
+          "type": "booking",
+          "attributes": {
+            "status": "approved",
+            "yard_id": 1,
+            "booking_name": "Dog Play Date",
+            "date": "2021-06-20",
+            "time": "1800",
+            "duration": 120,
+            "description": "Renting a yard to run my pup and their best friend for 2 hours"
+          }
+      },
+      {
+        "id": "2",
         "type": "booking",
         "attributes": {
-          "status": "approved",
-          "yard_id": 1,
-          "booking_name": "Dog Play Date",
-          "date": "how do we want to pass date info?",
-          "time": "how do we want to pass time info?",
-          "duration": 120,
-          "description": "Renting a yard to run my pup and their best friend for 2 hours"
-        }
-    },
-    {
-      "id": "2",
-      "type": "booking",
-      "attributes": {
-          "status": "approved",
-          "yard_id": 1,
-          "booking_name": "Picnic",
-          "date": "how do we want to pass date info?",
-          "time": "how do we want to pass time info?",
-          "duration": 180,
-          "description": "Renting for a picnic for Galentine's Day!"
-        }
-    },
-    {
-      "id": "3",
-      "type": "booking",
-      "attributes": {
-          "status": "approved",
-          "yard_id": 1,
-          "booking_name": "Badmitton Game",
-          "date": "how do we want to pass date info?",
-          "time": "how do we want to pass time info?",
-          "duration": 60,
-          "description": "Renting the yard to play a championship game of badmitton"
-        }
-    }
-  ]
-}
-```
+            "status": "approved",
+            "yard_id": 1,
+            "booking_name": "Picnic",
+            "date": "2021-06-20",
+            "time": "1800",
+            "duration": 180,
+            "description": "Renting for a picnic for Galentine's Day!"
+          }
+      },
+      {
+        "id": "3",
+        "type": "booking",
+        "attributes": {
+            "status": "approved",
+            "yard_id": 1,
+            "booking_name": "Badmitton Game",
+            "date": "2021-06-20",
+            "time": "1800",
+            "duration": 60,
+            "description": "Renting the yard to play a championship game of badmitton"
+          }
+      }
+    ]
+  }
+  ```
 
 ## Booking Details
 `GET /api/v1/bookings/:booking_id`
@@ -381,8 +537,8 @@
           "status": "approved",
           "yard_id": 1,
           "booking_name": "Dog Play Date",
-          "date": "how do we want to pass date info?",
-          "time": "how do we want to pass time info?",
+          "date": "2021-06-20",
+          "time": "1800",
           "duration": 120,
           "description": "Renting a yard to run my pup and their best friend for 2 hours"
         }
@@ -397,7 +553,7 @@
     "yard_id": 1,
     "booking_name": "Dog Party",
     "date": "08-15-21",
-    "time": "5:00PM",
+    "time": "1400",
     "duration": 120,
     "description": "Renting a yard to run my pup and their best friend for 2 hours"
   }
@@ -406,3 +562,17 @@
 ## Delete a Booking
 `DELETE /api/v1/bookings/:booking_id`
 - Destroy a booking if the id matches and it passes cancellation policy validation
+
+## Sad Path Response (no data matches query)
+  ```json
+    {
+      "data": {}
+    }
+  ```
+
+## Edge Case Response (weird data)
+  ```json
+  {
+    "error": "error message"
+  }
+  ```
