@@ -221,13 +221,48 @@ RSpec.describe "Yards API Endpoints" do
 
       headers = {"CONTENT_TYPE" => "application/json"}
       new_yard_params = ({
-                      purposes: [purposes.second.id, purposes.last.id]
+                      purposes: [purposes.first.id,purposes.second.id, purposes.last.id]
                     })
       patch "/api/v1/yards/#{yard.id}", headers: headers, params: JSON.generate({yard: new_yard_params})
       yard = Yard.find_by(id: yard.id)
       expect(response).to be_successful
 
       expect(yard.purposes.find(purposes.first.id)).to eq(purposes.first)
+      expect(yard.purposes.find(purposes.second.id)).to eq(purposes.second)
+      expect(yard.purposes.find(purposes.last.id)).to eq(purposes.last)
+    end
+
+    it "can delete the purposes on an existing yard that are no longer checked" do
+      YardPurpose.destroy_all
+      purposes = create_list(:purpose, 3)
+      yard_params = ({
+                      id: 1,
+                      host_id: 1,
+                      name: 'yard',
+                      street_address: '123 Fake St.',
+                      city: 'Denver',
+                      state: 'CO',
+                      zipcode: '12345',
+                      price: 20.00,
+                      description: 'description',
+                      availability: 'availability',
+                      payment: 'venmo',
+                      photo_url_1: 'url1',
+                      photo_url_2: 'url2',
+                      photo_url_3: 'url3'
+                    })
+      yard = Yard.create!(yard_params)
+      create(:yard_purpose, yard: yard, purpose: purposes.first)
+
+      headers = {"CONTENT_TYPE" => "application/json"}
+      new_yard_params = ({
+                      purposes: [purposes.second.id, purposes.last.id]
+                    })
+      patch "/api/v1/yards/#{yard.id}", headers: headers, params: JSON.generate({yard: new_yard_params})
+      yard = Yard.find_by(id: yard.id)
+      expect(response).to be_successful
+
+      expect(yard.purposes.where(id: purposes.first.id)).to eq([])
       expect(yard.purposes.find(purposes.second.id)).to eq(purposes.second)
       expect(yard.purposes.find(purposes.last.id)).to eq(purposes.last)
     end
