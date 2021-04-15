@@ -95,14 +95,40 @@ RSpec.describe "Yards API Endpoints" do
       expect(created_yard.yard_purposes.first.purpose_id).to eq(purposes.first.id)
       expect(created_yard.yard_purposes.last.purpose_id).to eq(purposes.last.id)
       expect(created_yard.yard_purposes.include?(purposes.second.id)).to eq(false)
-      
+
       expect(response).to have_http_status(:created)
       yard = JSON.parse(response.body, symbolize_names: true)
     end
 
     it "Won't create a new yard with missing information" do
+      purposes = create_list(:purpose, 3)
       yard_params = ({
                       id: 1,
+                      street_address: "123 Fake St.",
+                      city: "Denver",
+                      state: "CO",
+                      zipcode: '12345',
+                      price: 20.00,
+                      description: 'description',
+                      availability: 'availability',
+                      payment: 'venmo',
+                      photo_url_1: 'url1',
+                      photo_url_2: 'url2',
+                      photo_url_3: 'url3',
+                      purposes: [purposes.first.id, purposes.last.id]
+                    })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "Won't create a new yard when there are no purposes" do
+      yard_params = ({
+                      id: 1,
+                      host_id: 1,
+                      name: 'yard',
                       street_address: "123 Fake St.",
                       city: "Denver",
                       state: "CO",
@@ -118,8 +144,11 @@ RSpec.describe "Yards API Endpoints" do
       headers = {"CONTENT_TYPE" => "application/json"}
 
       post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+      returned_json = JSON.parse(response.body, symbolize_names: true)
 
-      expect(response).to have_http_status(:not_found)
+      expect(response).to have_http_status(:not_acceptable)
+      expect(returned_json[:error]).to be_a(String)
+      expect(returned_json[:error]).to eq("You must select at least one purpose")
     end
 
     it "can update an existing yard" do

@@ -11,11 +11,16 @@ class Api::V1::YardsController < ApplicationController
   end
 
   def create
-    yard = Yard.create!(yard_params)
-    params[:yard][:purposes].each do |purpose|
-      YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
+    if params[:yard][:purposes]
+      yard = Yard.create!(yard_params)
+      params[:yard][:purposes].each do |purpose|
+        YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
+      end
+      render json: YardSerializer.new(yard), status: :created
+    else
+      error = "You must select at least one purpose"
+      render_error(error, :not_acceptable)
     end
-    render json: YardSerializer.new(yard), status: :created
   end
 
   def update
