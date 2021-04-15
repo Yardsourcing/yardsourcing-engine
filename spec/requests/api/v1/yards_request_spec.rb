@@ -63,7 +63,7 @@ RSpec.describe "Yards API Endpoints" do
                       street_address: '123 Fake St.',
                       city: 'Denver',
                       state: 'CO',
-                      zipcode: 12345,
+                      zipcode: '12345',
                       price: 20.00,
                       description: 'description',
                       availability: 'availability',
@@ -101,7 +101,7 @@ RSpec.describe "Yards API Endpoints" do
                       street_address: "123 Fake St.",
                       city: "Denver",
                       state: "CO",
-                      zipcode: 12345,
+                      zipcode: '12345',
                       price: 20.00,
                       description: 'description',
                       availability: 'availability',
@@ -146,7 +146,7 @@ RSpec.describe "Yards API Endpoints" do
                       street_address: "123 Fake St.",
                       city: "Denver",
                       state: "CO",
-                      zipcode: 12345,
+                      zipcode: '12345',
                       price: 20.00,
                       description: 'description',
                       availability: 'availability',
@@ -178,11 +178,11 @@ RSpec.describe "Yards API Endpoints" do
   describe "Yard Search" do
     describe "Happy Path" do
       skip "returns yard records that match the search criteria" do
-        yard_1 = create(:yard, zipcode: 19125)
-        yard_2 = create(:yard, zipcode: 19125)
-        yard_3 = create(:yard, zipcode: 19125)
-        yard_4 = create(:yard, zipcode: 19125)
-        yard_5 = create(:yard, zipcode: 19125)
+        yard_1 = create(:yard, zipcode: '19125')
+        yard_2 = create(:yard, zipcode: '19125')
+        yard_3 = create(:yard, zipcode: '19125')
+        yard_4 = create(:yard, zipcode: '19125')
+        yard_5 = create(:yard, zipcode: '19125')
 
         pet_yard = create(:purpose, name: "Pet Yard")
         party_yard = create(:purpose, name: "Party Yard")
