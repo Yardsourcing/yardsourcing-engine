@@ -27,9 +27,10 @@ class Api::V1::YardsController < ApplicationController
     yard = Yard.find(params[:id])
     if params[:yard][:purposes] || yard.purposes
       yard.update!(yard_params)
-      params[:yard][:purposes]&.each do |yard_purpose|
-        if yard.purposes.none?{ |purpose| purpose.id == yard_purpose}
-          YardPurpose.create!(yard_id: yard.id, purpose_id: yard_purpose)
+      params[:yard][:purposes]&.each do |purpose|
+        binding.pry
+        if yard.purposes.where(id: purpose).empty?
+          YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
         end
       end
       render json: YardSerializer.new(yard)
