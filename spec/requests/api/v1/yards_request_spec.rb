@@ -56,6 +56,7 @@ RSpec.describe "Yards API Endpoints" do
   end
   describe "CRUD Functionality" do
     it "can create a new yard" do
+      purposes = create_list(:purpose, 3)
       yard_params = ({
                       id: 1,
                       host_id: 1,
@@ -70,7 +71,8 @@ RSpec.describe "Yards API Endpoints" do
                       payment: 'venmo',
                       photo_url_1: 'url1',
                       photo_url_2: 'url2',
-                      photo_url_3: 'url3'
+                      photo_url_3: 'url3',
+                      purposes: [purposes.first.id, purposes.last.id]
                     })
       headers = {"CONTENT_TYPE" => "application/json"}
 
@@ -90,7 +92,10 @@ RSpec.describe "Yards API Endpoints" do
       expect(created_yard.photo_url_1).to eq(yard_params[:photo_url_1])
       expect(created_yard.photo_url_2).to eq(yard_params[:photo_url_2])
       expect(created_yard.photo_url_3).to eq(yard_params[:photo_url_3])
-
+      expect(created_yard.yard_purposes.first.purpose_id).to eq(purposes.first.id)
+      expect(created_yard.yard_purposes.last.purpose_id).to eq(purposes.last.id)
+      expect(created_yard.yard_purposes.include?(purposes.second.id)).to eq(false)
+      
       expect(response).to have_http_status(:created)
       yard = JSON.parse(response.body, symbolize_names: true)
     end

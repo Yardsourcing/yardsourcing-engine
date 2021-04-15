@@ -12,6 +12,9 @@ class Api::V1::YardsController < ApplicationController
 
   def create
     yard = Yard.create!(yard_params)
+    params[:yard][:purposes].each do |purpose|
+      YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
+    end
     render json: YardSerializer.new(yard), status: :created
   end
 
@@ -35,18 +38,18 @@ class Api::V1::YardsController < ApplicationController
   end
 
   def yard_params
-  params.require(:yard).permit(:host_id,
-                              :name,
-                              :street_address,
-                              :city,
-                              :state,
-                              :zipcode,
-                              :price,
-                              :description,
-                              :availability,
-                              :payment,
-                              :photo_url_1,
-                              :photo_url_2,
-                              :photo_url_3)
-end
+    params.require(:yard).permit(:host_id,
+                                :name,
+                                :street_address,
+                                :city,
+                                :state,
+                                :zipcode,
+                                :price,
+                                :description,
+                                :availability,
+                                :payment,
+                                :photo_url_1,
+                                :photo_url_2,
+                                :photo_url_3,)
+  end
 end
