@@ -6,8 +6,14 @@ class Yard < ApplicationRecord
   validates :host_id, presence: true, numericality: {
             greater_than_or_equal_to: 0
           }
-  validates_presence_of :name
-  validates :zipcode, numericality: {
+  validates :price, presence: true, numericality: {
             greater_than_or_equal_to: 0
           }
+  validates_presence_of :name,
+                        :street_address,
+                        :city,
+                        :state,
+                        :zipcode,
+                        :availability,
+                        :payment
 end

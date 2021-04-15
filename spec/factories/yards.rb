@@ -5,7 +5,7 @@ FactoryBot.define do
     street_address { "123 Fake St" }
     city { "Denver" }
     state { "CO" }
-    zipcode { 12345 }
+    zipcode { '12345' }
     price { "9.99" }
     description { "MyString" }
     availability { "MyString" }
