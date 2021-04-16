@@ -146,7 +146,7 @@
 - Destroy any subsequent yard-purposes
 
 ## User Yards
-`GET /api/v1/yards/host/yards?user_id=1`
+`GET /api/v1/hosts/host_id/yards`
   ```json
   {
     "data": [

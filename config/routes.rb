@@ -5,7 +5,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :purposes, only: [:index]
       resources :yards, except: [:index]
+
       resources:bookings, only: [:show]
+
+      resources :hosts, only: [] do
+        resources :yards, only: [:index]
+      end
     end
   end
 end
