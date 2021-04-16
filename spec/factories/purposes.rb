@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :purpose do
-    name { "Purpose" }
+    sequence :name  do |n|
+      "Purpose #{n + 1}"
+    end
   end
 end

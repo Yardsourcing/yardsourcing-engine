@@ -6,7 +6,6 @@
 | ---------- | ------ | -------- | ------:|
 | GET | /api/v1/purposes | Get the available purposes | [json](#purposes) |
 | GET | /api/v1/yards/:yard_id  | Get a yard's show page | [json](#yard-details) |
-| GET | /api/v1/yards/:yard_id/purposes  | Get a yard's purposes | [json](#yard-purposes) |
 | POST | /api/v1/yards  | Create a new yard | [json](#create-a-yard) |
 | DELETE | /api/v1/yards/:yard_id  | Delete a yard | [details](#delete-a-yard) |
 | PUT | /api/v1/yards/:yard_id | Update a yard | [json](#update-a-yard)
@@ -94,29 +93,6 @@
         }
       }
     }
-  }
-  ```
-
-## Yard Purposes
-  `GET /api/v1/purposes`
-  ```json
-  {
-    "data": [
-      {
-        "id": "1",
-          "type": "purpose",
-          "attributes": {
-            "name": "Pet Rental",
-          }
-      },
-      {
-        "id": "2",
-        "type": "purpose",
-          "attributes": {
-            "name": "Party Rental",
-          }
-      }
-    ]
   }
   ```
 

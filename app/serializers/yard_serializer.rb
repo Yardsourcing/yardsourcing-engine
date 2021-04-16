@@ -4,13 +4,20 @@ class YardSerializer
               :name,
               :street_address,
               :city,
-              :state, 
-              :zipcode, 
-              :price, 
-              :description, 
-              :availability, 
-              :payment, 
-              :photo_url_1, 
-              :photo_url_2, 
+              :state,
+              :zipcode,
+              :description,
+              :availability,
+              :payment,
+              :photo_url_1,
+              :photo_url_2,
               :photo_url_3
+
+  attribute :price do |object|
+    object.price.to_f
+  end
+
+  attribute :purposes do |object|
+    PurposeSerializer.new(object.purposes)
+  end
 end

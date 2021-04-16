@@ -9,4 +9,8 @@ class ApplicationController < ActionController::API
   def render_invalid_record
     render json: "Invalid Record", status: :not_found
   end
+
+  def render_error(error, status = :bad_request)
+    render json: { message: "your request cannot be completed", error: error}, status: status
+  end
 end

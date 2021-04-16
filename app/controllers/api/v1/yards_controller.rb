@@ -11,14 +11,27 @@ class Api::V1::YardsController < ApplicationController
   end
 
   def create
-    yard = Yard.create!(yard_params)
-    render json: YardSerializer.new(yard), status: :created
+    if yard_purposes
+      yard = Yard.create!(yard_params)
+      create_yard_purposes(yard)
+      render json: YardSerializer.new(yard), status: :created
+    else
+      error = "You must select at least one purpose"
+      render_error(error, :not_acceptable)
+    end
   end
 
   def update
     yard = Yard.find(params[:id])
-    yard.update!(yard_params)
-    render json: YardSerializer.new(yard)
+    if yard_purposes
+      yard.update!(yard_params)
+      create_yard_purposes(yard)
+      YardPurpose.destroy(yard.yard_purposes.find_unselected_purposes(yard_purposes))
+      render json: YardSerializer.new(yard)
+    else
+      error = "You must select at least one purpose"
+      render_error(error, :not_acceptable)
+    end
   end
 
   def destroy
@@ -26,7 +39,17 @@ class Api::V1::YardsController < ApplicationController
     render json: Yard.destroy(params[:id])
   end
 
+  def create_yard_purposes(yard)
+    yard_purposes&.each do |purpose_id|
+      YardPurpose.create(yard_id: yard.id, purpose_id: purpose_id)
+    end
+  end
+
   private
+
+  def yard_purposes
+    params[:yard][:purposes]
+  end
 
   def validate_params
     if params[:id].to_i == 0
@@ -35,18 +58,18 @@ class Api::V1::YardsController < ApplicationController
   end
 
   def yard_params
-  params.require(:yard).permit(:host_id,
-                              :name,
-                              :street_address,
-                              :city,
-                              :state,
-                              :zipcode,
-                              :price,
-                              :description,
-                              :availability,
-                              :payment,
-                              :photo_url_1,
-                              :photo_url_2,
-                              :photo_url_3)
-end
+    params.require(:yard).permit(:host_id,
+                                :name,
+                                :street_address,
+                                :city,
+                                :state,
+                                :zipcode,
+                                :price,
+                                :description,
+                                :availability,
+                                :payment,
+                                :photo_url_1,
+                                :photo_url_2,
+                                :photo_url_3,)
+  end
 end
