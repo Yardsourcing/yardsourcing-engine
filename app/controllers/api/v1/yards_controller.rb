@@ -41,9 +41,7 @@ class Api::V1::YardsController < ApplicationController
 
   def create_yard_purposes(yard)
     yard_purposes&.each do |purpose_id|
-      if yard.purposes.where(id: purpose_id).empty?
-        YardPurpose.create!(yard_id: yard.id, purpose_id: purpose_id)
-      end
+      YardPurpose.create(yard_id: yard.id, purpose_id: purpose_id)
     end
   end
 
