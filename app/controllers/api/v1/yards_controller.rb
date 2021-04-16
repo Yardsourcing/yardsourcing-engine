@@ -25,8 +25,7 @@ class Api::V1::YardsController < ApplicationController
 
   def update
     yard = Yard.find(params[:id])
-    # require "pry"; binding.pry
-    if yard_purposes || yard.purposes
+    if yard_purposes
       yard.update!(yard_params)
       yard_purposes&.each do |purpose|
         if yard.purposes.where(id: purpose).empty?

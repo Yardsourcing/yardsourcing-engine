@@ -170,25 +170,45 @@ RSpec.describe "Yards API Endpoints" do
       expect(yard.purposes.count).to eq(2)
     end
 
+    it "can update an existing yard and create a purpose that doesn't exist" do
+      purposes = create_list(:purpose, 3)
+      yard = create(:yard)
+      yard.purposes << [purposes.first, purposes.second]
+      id = yard.id
+      previous_name = Yard.last.name
+      yard_params = { name: "New Name", purposes: purposes.map(&:id) }
+      headers = {"CONTENT_TYPE" => "application/json"}
+      expect(yard.purposes.count).to eq(2)
+
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+
+      yard = Yard.find_by(id: id)
+      expect(response).to be_successful
+      expect(yard.name).to_not eq(previous_name)
+      expect(yard.name).to eq(yard_params[:name])
+      expect(yard.purposes.count).to eq(3)
+    end
+
     it "can't update an existing yard when all purposes have been removed" do
       purposes = create_list(:purpose, 3)
       yard = create(:yard)
       yard.purposes << [purposes]
       id = yard.id
       previous_name = Yard.last.name
-      yard_params = { name: "New Name", purposes: [] }
+      yard_params = { name: "New Name"}
       headers = {"CONTENT_TYPE" => "application/json"}
       expect(yard.purposes.count).to eq(3)
 
       patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
       yard = Yard.find_by(id: id)
+      returned_json = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:not_acceptable)
       expect(returned_json[:error]).to be_a(String)
       expect(returned_json[:error]).to eq("You must select at least one purpose")
       expect(yard.name).to eq(previous_name)
       expect(yard.purposes.count).to eq(3)
-      
+
     end
 
     it "can't update an yard that doesn't exist" do
