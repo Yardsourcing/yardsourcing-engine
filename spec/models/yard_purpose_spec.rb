@@ -14,8 +14,11 @@ RSpec.describe YardPurpose, type: :model do
   end
 
   describe "class methods" do
-    describe "::find_unseleted_purposes" do
+    describe "::find_unselected_purposes" do
       it "find all purposes that have been unselected by the user" do
+        Yard.destroy_all
+        Purpose.destroy_all
+        YardPurpose.destroy_all
         yard = create(:yard)
         purposes = create_list(:purpose, 1)
         yard_purpose = create(:yard_purpose, yard_id: yard.id, purpose_id: purposes.first.id)
