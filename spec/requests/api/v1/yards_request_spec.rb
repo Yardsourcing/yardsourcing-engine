@@ -182,12 +182,13 @@ RSpec.describe "Yards API Endpoints" do
 
       patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
       yard = Yard.find_by(id: id)
-      
+
       expect(response).to have_http_status(:not_acceptable)
       expect(returned_json[:error]).to be_a(String)
       expect(returned_json[:error]).to eq("You must select at least one purpose")
       expect(yard.name).to eq(previous_name)
       expect(yard.purposes.count).to eq(3)
+      
     end
 
     it "can't update an yard that doesn't exist" do
