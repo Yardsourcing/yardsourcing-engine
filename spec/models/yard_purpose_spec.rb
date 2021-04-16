@@ -20,10 +20,10 @@ RSpec.describe YardPurpose, type: :model do
         Purpose.destroy_all
         YardPurpose.destroy_all
         yard = create(:yard)
-        purposes = create_list(:purpose, 1)
+        purposes = create_list(:purpose, 3)
         yard_purpose = create(:yard_purpose, yard_id: yard.id, purpose_id: purposes.first.id)
 
-        expect(yard.yard_purposes.find_unselected_purposes([2,3])).to eq([yard_purpose.id])
+        expect(yard.yard_purposes.find_unselected_purposes([purposes.second.id, purposes.last.id])).to eq([yard_purpose.id])
       end
     end
   end
