@@ -4,8 +4,9 @@ RSpec.describe "Yards API Endpoints" do
   describe "Yard Details" do
     describe "Happy Path" do
       it "should return a json response with a specific yards details" do
+        purposes = create_list(:purpose, 3)
         yard = create(:yard)
-
+        yard.purposes << [purposes]
         get "/api/v1/yards/#{yard.id}"
         expect(response).to be_successful
 
@@ -14,20 +15,43 @@ RSpec.describe "Yards API Endpoints" do
         expect(yard_details).to be_a(Hash)
         expect(yard_details[:data]).to be_a(Hash)
         expect(yard_details[:data][:attributes]).to be_a(Hash)
-        expect(yard_details[:data][:attributes].count).to eq(13)
+        expect(yard_details[:data][:attributes].count).to eq(14)
         expect(yard_details[:data][:attributes]).to have_key(:host_id)
+        expect(yard_details[:data][:attributes][:host_id]).to be_a(Integer)
         expect(yard_details[:data][:attributes]).to have_key(:name)
+        expect(yard_details[:data][:attributes][:name]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:street_address)
+        expect(yard_details[:data][:attributes][:street_address]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:city)
+        expect(yard_details[:data][:attributes][:city]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:state)
+        expect(yard_details[:data][:attributes][:state]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:zipcode)
+        expect(yard_details[:data][:attributes][:zipcode]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:price)
+        expect(yard_details[:data][:attributes][:price]).to be_a(Float)
         expect(yard_details[:data][:attributes]).to have_key(:description)
+        expect(yard_details[:data][:attributes][:description]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:payment)
+        expect(yard_details[:data][:attributes][:payment]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:availability)
+        expect(yard_details[:data][:attributes][:availability]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:photo_url_1)
+        expect(yard_details[:data][:attributes][:photo_url_1]).to be_a(String)
         expect(yard_details[:data][:attributes]).to have_key(:photo_url_2)
         expect(yard_details[:data][:attributes]).to have_key(:photo_url_3)
+        expect(yard_details[:data][:attributes]).to have_key(:purposes)
+        expect(yard_details[:data][:attributes]).to have_key(:purposes)
+        expect(yard_details[:data][:attributes][:purposes][:data].count).to eq(3)
+        expect(yard_details[:data][:attributes][:purposes]).to be_a(Hash)
+        expect(yard_details[:data][:attributes][:purposes][:data]).to be_an(Array)
+        expect(yard_details[:data][:attributes][:purposes][:data][0]).to be_a(Hash)
+        expect(yard_details[:data][:attributes][:purposes][:data][0][:attributes]).to be_a(Hash)
+        expect(yard_details[:data][:attributes][:purposes][:data][0][:attributes]).to have_key(:name)
+        expect(yard_details[:data][:attributes][:purposes][:data][0][:attributes][:name]).to be_a(String)
+        expect(yard_details[:data][:attributes][:purposes][:data][0][:attributes][:name]).to eq("#{purposes.first.name}")
+        expect(yard_details[:data][:attributes][:purposes][:data][-1][:attributes][:name]).to eq("#{purposes.last.name}")
+        # expect(yard_details[:data][:attributes][:purposes].count).to eq(3)
       end
     end
     describe "Sad Path" do
