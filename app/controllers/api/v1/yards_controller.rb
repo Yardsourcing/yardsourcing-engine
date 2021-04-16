@@ -25,6 +25,7 @@ class Api::V1::YardsController < ApplicationController
 
   def update
     yard = Yard.find(params[:id])
+    # require "pry"; binding.pry
     if yard_purposes || yard.purposes
       yard.update!(yard_params)
       yard_purposes&.each do |purpose|
@@ -32,7 +33,7 @@ class Api::V1::YardsController < ApplicationController
           YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
         end
       end
-      YardPurpose.destroy(yard.yard_purposes.find_unseleted_purposes(yard_purposes))
+      YardPurpose.destroy(yard.yard_purposes.find_unselected_purposes(yard_purposes))
       render json: YardSerializer.new(yard)
     else
       error = "You must select at least one purpose"
