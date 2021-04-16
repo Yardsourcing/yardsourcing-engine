@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_15_003048) do
+ActiveRecord::Schema.define(version: 2021_04_16_130930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2021_04_15_003048) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["purpose_id"], name: "index_yard_purposes_on_purpose_id"
+    t.index ["yard_id", "purpose_id"], name: "index_yard_purposes_on_yard_id_and_purpose_id", unique: true
     t.index ["yard_id"], name: "index_yard_purposes_on_yard_id"
   end
 
