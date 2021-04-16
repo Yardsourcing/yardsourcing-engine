@@ -12,8 +12,8 @@ RSpec.describe YardPurpose, type: :model do
         yard = create(:yard)
         purposes = create_list(:purpose, 1)
         yard_purpose = create(:yard_purpose, yard_id: yard.id, purpose_id: purposes.first.id)
-        
-        expect(yard.yard_purposes.find_unseleted_purposes([2,3])).to eq([yard_purpose.id])
+
+        expect(yard.yard_purposes.find_unselected_purposes([2,3])).to eq([yard_purpose.id])
       end
     end
   end

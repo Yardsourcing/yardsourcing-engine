@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Yards API Endpoints" do
   describe "Yard Details" do
     describe "Happy Path" do
-      it "should return a json response with a specific yards details" do
+      it "should return a json response with a specific yards details and purposes" do
         purposes = create_list(:purpose, 3)
         yard = create(:yard)
         yard.purposes << [purposes]
@@ -51,7 +51,6 @@ RSpec.describe "Yards API Endpoints" do
         expect(yard_details[:data][:attributes][:purposes][:data][0][:attributes][:name]).to be_a(String)
         expect(yard_details[:data][:attributes][:purposes][:data][0][:attributes][:name]).to eq("#{purposes.first.name}")
         expect(yard_details[:data][:attributes][:purposes][:data][-1][:attributes][:name]).to eq("#{purposes.last.name}")
-        # expect(yard_details[:data][:attributes][:purposes].count).to eq(3)
       end
     end
     describe "Sad Path" do
