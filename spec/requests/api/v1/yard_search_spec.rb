@@ -2,6 +2,24 @@ require 'rails_helper'
 
 RSpec.describe "Yard Search" do
   describe "Happy Path" do
+    it "returns yard records that match the zipcode criteria" do
+      yard_1 = create(:yard, zipcode: '19125')
+      yard_2 = create(:yard, zipcode: '19125')
+      yard_3 = create(:yard, zipcode: '19125')
+      yard_4 = create(:yard, zipcode: '54678')
+      yard_5 = create(:yard, zipcode: '11122')
+
+      get "/api/v1/yards/yard_search?location=19125"
+      expect(response).to be_successful
+      yards = JSON.parse(response.body, symbolize_names:true)
+
+      expect(yards).to be_a(Hash)
+      expect(yards[:data]).to be_an(Array)
+      expect(yards[:data].first).to be_a(Hash)
+      expect(yards[:data].first[:type]).to eq('yard')
+      expect(yards[:data].count).to eq(3)
+    end
+
     skip "returns yard records that match the search criteria" do
       yard_1 = create(:yard, zipcode: '19125')
       yard_2 = create(:yard, zipcode: '19125')
@@ -74,14 +92,39 @@ RSpec.describe "Yard Search" do
     end
   end
   describe "Sad Path" do
-    skip "returns an empty array when no data matches the criteria" do
-      get "/api/v1/yards/yard_search?location=13456&purposes=pet+rental&hobby+rental"
+    it "returns an empty array when no zipcode matches the criteria" do
+      get "/api/v1/yards/yard_search?location=13456"
+      # get "/api/v1/yards/yard_search?location=13456&purposes=pet+rental&hobby+rental"
       expect(response).to be_successful
 
       yard_details = JSON.parse(response.body, symbolize_names:true)
       expect(yard_details).to be_a(Hash)
       expect(yard_details[:data]).to be_an(Array)
       expect(yard_details[:data].empty?).to eq(true)
+    end
+  end
+
+  describe 'Edge Cases' do
+    it "returns an error when the zipcode contains alpha characters" do
+      get "/api/v1/yards/yard_search?location=134A6"
+
+      expect(response).to_not be_successful
+      yard_details = JSON.parse(response.body, symbolize_names:true)
+
+      expect(response).to have_http_status(:bad_request)
+      expect(yard_details[:error]).to be_a(String)
+      expect(yard_details[:error]).to eq("Invalid zipcode")
+    end
+
+    it "returns an error when the zipcode is not 5 numeric characters" do
+      get "/api/v1/yards/yard_search?location=1346"
+
+      expect(response).to_not be_successful
+      yard_details = JSON.parse(response.body, symbolize_names:true)
+
+      expect(response).to have_http_status(:bad_request)
+      expect(yard_details[:error]).to be_a(String)
+      expect(yard_details[:error]).to eq("Invalid zipcode")
     end
   end
 end
