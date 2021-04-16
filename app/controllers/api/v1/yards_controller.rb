@@ -13,9 +13,7 @@ class Api::V1::YardsController < ApplicationController
   def create
     if yard_purposes
       yard = Yard.create!(yard_params)
-      yard_purposes.each do |purpose|
-        YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
-      end
+      create_yard_purposes(yard)
       render json: YardSerializer.new(yard), status: :created
     else
       error = "You must select at least one purpose"
@@ -27,11 +25,7 @@ class Api::V1::YardsController < ApplicationController
     yard = Yard.find(params[:id])
     if yard_purposes
       yard.update!(yard_params)
-      yard_purposes&.each do |purpose|
-        if yard.purposes.where(id: purpose).empty?
-          YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
-        end
-      end
+      create_yard_purposes(yard)
       YardPurpose.destroy(yard.yard_purposes.find_unselected_purposes(yard_purposes))
       render json: YardSerializer.new(yard)
     else
@@ -43,6 +37,14 @@ class Api::V1::YardsController < ApplicationController
   def destroy
     yard = Yard.find(params[:id])
     render json: Yard.destroy(params[:id])
+  end
+
+  def create_yard_purposes(yard)
+    yard_purposes&.each do |purpose|
+      if yard.purposes.where(id: purpose).empty?
+        YardPurpose.create!(yard_id: yard.id, purpose_id: purpose)
+      end
+    end
   end
 
   private
