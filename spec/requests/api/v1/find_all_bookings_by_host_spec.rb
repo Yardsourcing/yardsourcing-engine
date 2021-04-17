@@ -1,14 +1,15 @@
- require 'rails_helper'
-RSpec.describe 'All Bookings by Renter API' do
+require 'rails_helper'
+RSpec.describe 'All Bookings by Host API' do
   before :each do
-    create_list(:booking, 2, status: 'pending')
-    create_list(:booking, 2, status: 'rejected')
-    create_list(:booking, 2, status: 'approved')
+    yard = create(:yard, host_id: 1)
+    create_list(:booking, 2, status: 'pending', yard_id: yard.id)
+    create_list(:booking, 2, status: 'rejected', yard_id: yard.id)
+    create_list(:booking, 2, status: 'approved', yard_id: yard.id)
   end
 
   describe 'happy path' do
     it 'returns all bookings' do
-      get "/api/v1/renters/1/bookings"
+      get "/api/v1/hosts/1/bookings"
 
       expect(response).to be_successful
 
@@ -45,7 +46,7 @@ RSpec.describe 'All Bookings by Renter API' do
       create_list(:booking, 7, renter_id: 2)
       create_list(:booking, 2, renter_id: 2)
 
-      get "/api/v1/renters/3/bookings"
+      get "/api/v1/hosts/3/bookings"
 
       expect(response).to be_successful
       bookings = JSON.parse(response.body, symbolize_names:true)
@@ -59,7 +60,7 @@ RSpec.describe 'All Bookings by Renter API' do
       create_list(:booking, 7, renter_id: 2)
       create_list(:booking, 2, renter_id: 2)
 
-      get "/api/v1/renters/three/bookings"
+      get "/api/v1/hosts/three/bookings"
 
       bookings = JSON.parse(response.body, symbolize_names:true)
       expect(bookings).to be_a(Hash)
