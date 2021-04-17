@@ -16,4 +16,15 @@ class Yard < ApplicationRecord
                         :zipcode,
                         :availability,
                         :payment
+
+  def self.by_zipcode(zipcode)
+    where(zipcode: zipcode)
+  end
+
+  def self.by_zipcode_and_purposes(zipcode, purposes)
+    by_zipcode(zipcode)
+    .joins(:purposes)
+    .where('purposes.name in (?)', purposes)
+    .distinct
+  end
 end
