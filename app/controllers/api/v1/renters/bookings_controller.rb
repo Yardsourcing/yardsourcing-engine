@@ -6,9 +6,9 @@ class Api::V1::Renters::BookingsController < ApplicationController
     renter_id = params[:renter_id]
     status = params[:status]
     bookings = if status
-                  Booking.find_by_renter_and_status(renter_id, status)
+                  Booking.find_by_renter_and_status(renter_id, status).page params[:page]
                 else
-                  Booking.find_by_renter(renter_id)
+                  Booking.find_by_renter(renter_id).page params[:page]
                 end
     if bookings.empty?
       render json: NullSerializer.new
@@ -18,7 +18,7 @@ class Api::V1::Renters::BookingsController < ApplicationController
   end
 
   private
-  
+
   def validate_status
     if !params[:status].nil? && params[:status].empty?
       render json: {error: "Need status"}, status: :bad_request
