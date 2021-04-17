@@ -11,6 +11,12 @@ class Api::V1::BookingsController < ApplicationController
     render json: BookingSerializer.new(booking), status: :created
   end
 
+  def update
+    booking = Booking.find(params[:id])
+    booking.update!(booking_params)
+    render json: BookingSerializer.new(booking)
+  end
+
   private
   def validate_params
     if params[:id].to_i == 0

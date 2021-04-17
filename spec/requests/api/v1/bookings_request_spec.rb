@@ -116,52 +116,21 @@ RSpec.describe 'Bookings API SPEC'do
       expect(response).to have_http_status(:not_found)
     end
 
-    # it "Won't create a new booking when there are no purposes" do
-    #   booking_params = ({
-    #                   id: 1,
-    #                   host_id: 1,
-    #                   name: 'booking',
-    #                   street_address: "123 Fake St.",
-    #                   city: "Denver",
-    #                   state: "CO",
-    #                   zipcode: '12345',
-    #                   price: 20.00,
-    #                   description: 'description',
-    #                   availability: 'availability',
-    #                   payment: 'venmo',
-    #                   photo_url_1: 'url1',
-    #                   photo_url_2: 'url2',
-    #                   photo_url_3: 'url3'
-    #                 })
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #
-    #   post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
-    #   returned_json = JSON.parse(response.body, symbolize_names: true)
-    #
-    #   expect(response).to have_http_status(:not_acceptable)
-    #   expect(returned_json[:error]).to be_a(String)
-    #   expect(returned_json[:error]).to eq("You must select at least one purpose")
-    # end
-    #
-    # it "can update an existing booking and remove a purpose when necessary" do
-    #   purposes = create_list(:purpose, 3)
-    #   booking = create(:booking)
-    #   booking.purposes << [purposes]
-    #   id = booking.id
-    #   previous_name = Booking.last.name
-    #   booking_params = { name: "New Name", purposes: [purposes.first.id, purposes.last.id] }
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #   expect(booking.purposes.count).to eq(3)
-    #
-    #   patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
-    #
-    #   booking = Booking.find_by(id: id)
-    #   expect(response).to be_successful
-    #   expect(booking.name).to_not eq(previous_name)
-    #   expect(booking.name).to eq(booking_params[:name])
-    #   expect(booking.purposes.count).to eq(2)
-    # end
-    #
+    it "can update an existing booking" do
+      booking = create(:booking)
+      id = booking.id
+      previous_name = Booking.last.booking_name
+      booking_params = { booking_name: "New Name" }
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+
+      booking = Booking.find_by(id: id)
+      expect(response).to be_successful
+      expect(booking.booking_name).to_not eq(previous_name)
+      expect(booking.booking_name).to eq(booking_params[:booking_name])
+    end
+
     # it "can update an existing booking and create a purpose that doesn't exist" do
     #   purposes = create_list(:purpose, 3)
     #   booking = create(:booking)
