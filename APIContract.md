@@ -12,7 +12,7 @@
 | GET | /api/v1/hosts/host_id/bookings?status=STATUS | Get all bookings for a host that have a particular status| [json](#get-user-bookings-by-status) |
 | GET | /api/v1/renters/renter_id/bookings?status=STATUS | Get all bookings for a renter that have a particular status| [json](#get-user-bookings-by-status) |
 | GET | /api/v1/yards?location=ZIP&purposes=PURPOSE+NAME&OTHER+PURPOSE+NAME  | Get yards that match search criteria. | [json](#yard-search) |
-| GET | /api/v1/hosts/host_id/yards  | Get yards that belong to a host | [json](#user-yards) |
+| GET | /api/v1/hosts/host_id/yards  | Get yards that belong to a host | [json](#host-yards) |
 | GET | /api/v1/yards/:yard_id/bookings | Get bookings that belong to a specific yard | [json](#yard-bookings) |
 | POST | /api/v1/bookings | Create a new booking | [json](#create-a-booking) |
 | GET | /api/v1/bookings/:booking_id | Get booking show page | [json](#booking-details) |
@@ -30,21 +30,21 @@
         "id": "1",
           "type": "purpose",
           "attributes": {
-            "name": "Pet Rental",
+            "name": "pet rental",
           }
       },
       {
         "id": "2",
         "type": "purpose",
           "attributes": {
-            "name": "Party Rental",
+            "name": "party rental",
           }
       },
       {
         "id": "3",
         "type": "yard",
           "attributes": {
-            "name": "Hobby Rental",
+            "name": "Hobby rental",
           }
       }
     ]
@@ -78,14 +78,14 @@
               "id": "1",
               "type": "purpose",
               "attributes": {
-                "name": "Pet Rental",
+                "name": "pet rental",
               }
             },
             {
               "id": "2",
               "type": "purpose",
               "attributes": {
-                "name": "Party Rental",
+                "name": "party rental",
               }
             }
           ]
@@ -145,8 +145,8 @@
 - Destroy a yard if the id matches
 - Destroy any subsequent yard-purposes
 
-## User Yards
-`GET /api/v1/yards/host/yards?user_id=1`
+## Host Yards
+`GET /api/v1/hosts/host_id/yards`
   ```json
   {
     "data": [
@@ -173,14 +173,14 @@
                   "id": "1",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Pet Rental",
+                    "name": "pet rental",
                   }
                 },
                 {
                   "id": "2",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Party Rental",
+                    "name": "party rental",
                   }
                 }
               ]
@@ -210,7 +210,7 @@
                   "id": "1",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Pet Rental",
+                    "name": "pet rental",
                   }
                 }
               ]
@@ -240,7 +240,7 @@
                   "id": "1",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Pet Rental",
+                    "name": "pet rental",
                   }
                 }
               ]
@@ -252,7 +252,8 @@
   ```
 
 ## Yard Search
-`GET /api/v1/yards?location=19125&purposes=pet+rental&pet+rental`
+ * The location query parameter is required.
+`GET /api/v1/yards?location=19125&purposes[]=pet+rental&purposes[]party+rental`
   ```json
   {
     "data": [
@@ -279,14 +280,14 @@
                   "id": "1",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Pet Rental",
+                    "name": "pet rental",
                   }
                 },
                 {
                   "id": "2",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Party Rental",
+                    "name": "party rental",
                   }
                 }
               ]
@@ -316,7 +317,7 @@
                   "id": "1",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Pet Rental",
+                    "name": "pet rental",
                   }
                 }
               ]
@@ -346,7 +347,7 @@
                   "id": "1",
                   "type": "purpose",
                   "attributes": {
-                    "name": "Pet Rental",
+                    "name": "pet rental",
                   }
                 }
               ]
