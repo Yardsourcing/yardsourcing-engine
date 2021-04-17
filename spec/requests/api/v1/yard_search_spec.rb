@@ -18,21 +18,28 @@ RSpec.describe "Yard Search" do
       expect(yards[:data].first).to be_a(Hash)
       expect(yards[:data].first[:type]).to eq('yard')
       expect(yards[:data].count).to eq(3)
+      expect(yards[:data].first[:id]).to eq(yard_1.id.to_s)
+      expect(yards[:data].last[:id]).to eq(yard_3.id.to_s)
+
+      yard_ids = yards[:data].map do |yard|
+        yard[:id].to_i
+      end
+      expect(yard_ids.include?(yard_4.id)).to eq(false)
+      expect(yard_ids.include?(yard_5.id)).to eq(false)
     end
 
-    skip "returns yard records that match the search criteria" do
+    it "returns yard records that match the search criteria" do
       yard_1 = create(:yard, zipcode: '19125')
       yard_2 = create(:yard, zipcode: '19125')
       yard_3 = create(:yard, zipcode: '19125')
-      yard_4 = create(:yard, zipcode: '19125')
-      yard_5 = create(:yard, zipcode: '19125')
+      yard_4 = create(:yard, zipcode: '54678')
+      yard_5 = create(:yard, zipcode: '11122')
 
       pet_yard = create(:purpose, name: "Pet Yard")
       party_yard = create(:purpose, name: "Party Yard")
       hobby_yard = create(:purpose, name: "Hobby Yard")
 
       yard_1.purposes << pet_yard
-      yard_2.purposes << pet_yard
       yard_3.purposes << pet_yard
       yard_5.purposes << pet_yard
 
@@ -45,52 +52,25 @@ RSpec.describe "Yard Search" do
       yard_2.purposes << party_yard
       yard_4.purposes << party_yard
 
-      get "/api/v1/yards/yard_search?location=19125&purposes=pet+rental"
+      get "/api/v1/yards/yard_search?location=19125&purposes[]=pet+yard&purposes[]=hobby+yard"
       expect(response).to be_successful
       yards = JSON.parse(response.body, symbolize_names:true)
 
-      #structure tests
       expect(yards).to be_a(Hash)
       expect(yards[:data]).to be_an(Array)
       expect(yards[:data].first).to be_a(Hash)
-      expect(yards[:data].first[:type]).to be_a(Yard)
-      expect(yards[:data].first[:attributes]).to be_a(Hash)
-      expect(yard_details[:data].first[:attributes].count).to eq(11)
-      expect(yard_details[:data].first[:attributes]).to have_key(:host_id)
-      expect(yard_details[:data].first[:attributes]).to have_key(:name)
-      expect(yard_details[:data].first[:attributes]).to have_key(:street_address)
-      expect(yard_details[:data].first[:attributes]).to have_key(:city)
-      expect(yard_details[:data].first[:attributes]).to have_key(:state)
-      expect(yard_details[:data].first[:attributes]).to have_key(:zipcode)
-      expect(yard_details[:data].first[:attributes]).to have_key(:price)
-      expect(yard_details[:data].first[:attributes]).to have_key(:description)
-      expect(yard_details[:data].first[:attributes]).to have_key(:payment)
-      expect(yard_details[:data].first[:attributes]).to have_key(:availability)
-      expect(yard_details[:data].first[:attributes]).to have_key(:photo_url_1)
-      expect(yard_details[:data].first[:attributes]).to have_key(:photo_url_2)
-      expect(yard_details[:data].first[:attributes]).to have_key(:photo_url_3)
+      expect(yards[:data].first[:id]).to eq(yard_1.id.to_s)
+      expect(yards[:data].last[:id]).to eq(yard_3.id.to_s)
 
-      #content tests
-      expect(yard_details[:data][0][:attributes][:name]).to eq(yard_1.name)
-      expect(yard_details[:data][1][:attributes][:name]).to eq(yard_2.name)
-      expect(yard_details[:data][2][:attributes][:name]).to eq(yard_3.name)
-      expect(yard_details[:data][3][:attributes][:name]).to eq(yard_5.name)
-
-      get "/api/v1/yards/yard_search?location=19125&purposes=pet+rental&party+rental"
-      expect(response).to be_successful
-      yards = JSON.parse(response.body, symbolize_names:true)
-
-      expect(yard_details[:data][0][:attributes][:name]).to eq(yard_2.name)
-
-      get "/api/v1/yards/yard_search?location=19125&purposes=pet+rental&hobby+rental"
-      expect(response).to be_successful
-      yards = JSON.parse(response.body, symbolize_names:true)
-
-      expect(yard_details[:data][0][:attributes][:name]).to eq(yard_1.name)
-      expect(yard_details[:data][1][:attributes][:name]).to eq(yard_3.name)
-      expect(yard_details[:data][2][:attributes][:name]).to eq(yard_5.name)
+      yard_ids = yards[:data].map do |yard|
+        yard[:id].to_i
+      end
+      expect(yard_ids.include?(yard_2.id)).to eq(false)
+      expect(yard_ids.include?(yard_4.id)).to eq(false)
+      expect(yard_ids.include?(yard_5.id)).to eq(false)
     end
   end
+
   describe "Sad Path" do
     it "returns an empty array when no zipcode matches the criteria" do
       get "/api/v1/yards/yard_search?location=13456"
