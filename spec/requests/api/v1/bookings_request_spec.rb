@@ -131,79 +131,36 @@ RSpec.describe 'Bookings API SPEC'do
       expect(booking.booking_name).to eq(booking_params[:booking_name])
     end
 
-    # it "can update an existing booking and create a purpose that doesn't exist" do
-    #   purposes = create_list(:purpose, 3)
-    #   booking = create(:booking)
-    #   booking.purposes << [purposes.first, purposes.second]
-    #   id = booking.id
-    #   previous_name = Booking.last.name
-    #   booking_params = { name: "New Name", purposes: purposes.map(&:id) }
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #   expect(booking.purposes.count).to eq(2)
-    #
-    #   patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
-    #
-    #   booking = Booking.find_by(id: id)
-    #   expect(response).to be_successful
-    #   expect(booking.name).to_not eq(previous_name)
-    #   expect(booking.name).to eq(booking_params[:name])
-    #   expect(booking.purposes.count).to eq(3)
-    # end
-    #
-    # it "can't update an existing booking when all purposes have been removed" do
-    #   purposes = create_list(:purpose, 3)
-    #   booking = create(:booking)
-    #   booking.purposes << [purposes]
-    #   id = booking.id
-    #   previous_name = Booking.last.name
-    #   booking_params = { name: "New Name"}
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #   expect(booking.purposes.count).to eq(3)
-    #
-    #   patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
-    #   booking = Booking.find_by(id: id)
-    #   returned_json = JSON.parse(response.body, symbolize_names: true)
-    #
-    #   expect(response).to have_http_status(:not_acceptable)
-    #   expect(returned_json[:error]).to be_a(String)
-    #   expect(returned_json[:error]).to eq("You must select at least one purpose")
-    #   expect(booking.name).to eq(previous_name)
-    #   expect(booking.purposes.count).to eq(3)
-    #
-    # end
-    #
-    # it "can't update an booking that doesn't exist" do
-    #   booking_params = { name: "New Name" }
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #
-    #   patch "/api/v1/bookings/#{99999999}", headers: headers, params: JSON.generate({booking: booking_params})
-    #   expect(response).to_not be_successful
-    #   expect(response).to have_http_status(:not_found)
-    # end
-    #
-    # it "can't update an existing booking with a bad ID" do
-    #   id = 1000000
-    #   booking_params = ({
-    #                   id: id,
-    #                   street_address: "123 Fake St.",
-    #                   city: "Denver",
-    #                   state: "CO",
-    #                   zipcode: '12345',
-    #                   price: 20.00,
-    #                   description: 'description',
-    #                   availability: 'availability',
-    #                   payment: 'venmo',
-    #                   photo_url_1: 'url1',
-    #                   photo_url_2: 'url2',
-    #                   photo_url_3: 'url3'
-    #                 })
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #
-    #   patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
-    #
-    #   expect(response).to_not be_successful
-    #   expect(response.code).to eq("404")
-    # end
+    it "can't update an booking that doesn't exist" do
+      booking_params = { name: "New Name" }
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      patch "/api/v1/bookings/#{99999999}", headers: headers, params: JSON.generate({booking: booking_params})
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "can't update an existing booking with a bad ID" do
+      id = 1000000
+      yard = create(:yard)
+      booking_params = ({
+        yard_id: yard.id,
+        renter_id: 1,
+        status: :pending,
+        booking_name: "Super Fun Time, BBQ",
+        date: Date.new(2021,04,25),
+        time: Time.new(2021, 04, 25, 14).strftime("%H:%M"),
+        duration: 3,
+        description: "Gonna be a super great cookout! BYOB",
+        id: id
+        })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+
+      expect(response).to_not be_successful
+      expect(response.code).to eq("404")
+    end
     #
     # it "can update the purposes on an existing booking" do
     #   BookingPurpose.destroy_all
