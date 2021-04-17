@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'All Bookings by Renter API' do
+RSpec.describe 'All Bookings by Host API' do
   before :each do
     yard = create(:yard, host_id: 1)
     create_list(:booking, 2, status: 'pending', yard_id: yard.id)
@@ -40,31 +40,31 @@ RSpec.describe 'All Bookings by Renter API' do
     end
   end
 
-  # describe 'sad path' do
-  #   it 'returns an empty array if no bookings exist' do
-  #     booking = create(:booking, renter_id: 2)
-  #     create_list(:booking, 7, renter_id: 2)
-  #     create_list(:booking, 2, renter_id: 2)
-  #
-  #     get "/api/v1/hosts/3/bookings"
-  #
-  #     expect(response).to be_successful
-  #     bookings = JSON.parse(response.body, symbolize_names:true)
-  #     expect(bookings).to be_a(Hash)
-  #     expect(bookings[:data]).to be_a(Hash)
-  #     expect(bookings[:data].empty?).to eq(true)
-  #   end
-  #
-  #   it 'returns an error if string for renter_id' do
-  #     booking = create(:booking, renter_id: 2)
-  #     create_list(:booking, 7, renter_id: 2)
-  #     create_list(:booking, 2, renter_id: 2)
-  #
-  #     get "/api/v1/hosts/three/bookings"
-  #
-  #     bookings = JSON.parse(response.body, symbolize_names:true)
-  #     expect(bookings).to be_a(Hash)
-  #     expect(bookings[:error]).to eq("String not accepted as id")
-  #   end
-  # end
+  describe 'sad path' do
+    it 'returns an empty array if no bookings exist' do
+      booking = create(:booking, renter_id: 2)
+      create_list(:booking, 7, renter_id: 2)
+      create_list(:booking, 2, renter_id: 2)
+
+      get "/api/v1/hosts/3/bookings"
+
+      expect(response).to be_successful
+      bookings = JSON.parse(response.body, symbolize_names:true)
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:data]).to be_a(Hash)
+      expect(bookings[:data].empty?).to eq(true)
+    end
+
+    it 'returns an error if string for renter_id' do
+      booking = create(:booking, renter_id: 2)
+      create_list(:booking, 7, renter_id: 2)
+      create_list(:booking, 2, renter_id: 2)
+
+      get "/api/v1/hosts/three/bookings"
+
+      bookings = JSON.parse(response.body, symbolize_names:true)
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:error]).to eq("String not accepted as id")
+    end
+  end
 end

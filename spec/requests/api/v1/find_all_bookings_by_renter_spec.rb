@@ -1,4 +1,4 @@
-require 'rails_helper'
+ require 'rails_helper'
 RSpec.describe 'All Bookings by Renter API' do
   before :each do
     create_list(:booking, 2, status: 'pending')
