@@ -22,17 +22,17 @@ RSpec.describe Yard, type: :model do
   end
 
   describe 'class methods' do
-    describe 'yards_by_zipcode' do
+    describe 'by_zipcode' do
       it "returns all yards with defined zipcode" do
         yards1 = create_list(:yard, 2, zipcode: '23456')
         yards2 = create(:yard, zipcode: '45678')
 
-        expect(Yard.yards_by_zipcode('23456')).to eq([yards1.first, yards1.last])
-        expect(Yard.yards_by_zipcode('23456').include?(yards2)).to eq(false)
+        expect(Yard.by_zipcode('23456')).to eq([yards1.first, yards1.last])
+        expect(Yard.by_zipcode('23456').include?(yards2)).to eq(false)
       end
     end
 
-    describe 'yards_by_zipcode_and_purposes' do
+    describe 'by_zipcode_and_purposes' do
       it "returns all yard with matching zipcode and purposes" do
         purposes = create_list(:purpose, 3)
         yards1 = create_list(:yard, 2, zipcode: '23456')
@@ -43,8 +43,8 @@ RSpec.describe Yard, type: :model do
         purpose_search1 = purposes.map(&:name)
         purpose_search2 = [purposes.second.name]
 
-        results1 = Yard.yards_by_zipcode_and_purposes(zipcode, purpose_search1)
-        results2 = Yard.yards_by_zipcode_and_purposes(zipcode, purpose_search2)
+        results1 = Yard.by_zipcode_and_purposes(zipcode, purpose_search1)
+        results2 = Yard.by_zipcode_and_purposes(zipcode, purpose_search2)
 
         expect(results1).to eq([yards1.first, yards1.last])
         expect(results2).to eq([yards1.first])
