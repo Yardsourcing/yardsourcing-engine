@@ -5,8 +5,10 @@ Rails.application.routes.draw do
       resources :purposes, only: [:index]
 
       get '/yards/yard_search', to: 'yards/search#index'
-
-      resources :yards, except: [:index]
+      get    '/yards/:id/bookings', to: 'yards/bookings#index'
+      resources :yards, except: [:index] do
+        # resources :bookings, only: [:index]
+        end
       resources:bookings, only: [:show]
 
       resources :hosts, only: [] do
