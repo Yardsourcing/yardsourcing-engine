@@ -45,12 +45,10 @@ RSpec.describe 'Yard API SPEC'do
       stringify2 = Booking.last.id.to_s
       stringify3 = Booking.second_to_last.id.to_s
       stringifytrue = Booking.second.id.to_s
-      stringifytrue2 = Booking.eighth.id.to_s
       expect(ids.include?(stringify)).to eq(false)
       expect(ids.include?(stringify2)).to eq(false)
       expect(ids.include?(stringify3)).to eq(false)
       expect(ids.include?(stringifytrue)).to eq(true)
-      expect(ids.include?(stringifytrue2)).to eq(true)
       expect(bookings[:data].count).to eq(7)
     end
   end
