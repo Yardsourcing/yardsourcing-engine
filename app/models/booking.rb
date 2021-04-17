@@ -17,4 +17,8 @@ class Booking < ApplicationRecord
   def date_cant_be_in_the_past
     errors.add(:date, "Booking Date can't be in the past") if date && date < Date.today
   end
+
+  def self.find_by_renter_and_status(renter_id, status)
+    where('renter_id = ? and status = ?', renter_id, Booking.statuses[status.to_sym])
+  end
 end

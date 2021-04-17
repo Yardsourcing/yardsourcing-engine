@@ -52,5 +52,10 @@ RSpec.describe Booking, type: :model do
       expect(booking.approved?).to eq(false)
       expect(booking.rejected?).to eq(true)
     end
+
+    it 'returns bookings by renter_id and status' do
+      booking = create(:booking, status: :pending)
+      expect(Booking.find_by_renter_and_status(1, 'pending')).to eq([booking])
+    end
   end
 end
