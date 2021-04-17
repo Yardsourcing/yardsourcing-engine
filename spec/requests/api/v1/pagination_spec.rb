@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe 'Pagination' do
   before :each do
     @yard = create(:yard, id: 1)
-    create_list(:booking, 100, yard: @yard)
+    create_list(:booking, 21, yard: @yard)
   end
 
   describe 'happy path' do
@@ -46,7 +46,7 @@ RSpec.describe 'Pagination' do
 
       expect(bookings).to be_a(Hash)
       expect(bookings[:data]).to be_an(Array)
-      expect(bookings[:data].count).to eq(20)
+      expect(bookings[:data].count).to eq(1)
       expect(bookings[:data].first).to be_a(Hash)
       expect(bookings[:data].first[:type]).to eq('booking')
     end
@@ -66,7 +66,7 @@ RSpec.describe 'Pagination' do
     end
 
     it 'returns 20 yards by zipcode' do
-      create_list(:yard, 60, zipcode: '19125')
+      create_list(:yard, 21, zipcode: '19125')
 
       get "/api/v1/yards/yard_search?location=19125"
       expect(response).to be_successful
@@ -81,7 +81,7 @@ RSpec.describe 'Pagination' do
 
     it 'returns 20 yards by zipcode and purpose' do
       @pet_yard = create(:purpose, name: "Pet Yard")
-      yards = create_list(:yard, 60, zipcode: '19125')
+      yards = create_list(:yard, 21, zipcode: '19125')
 
       yards.each do |yard|
         create(:yard_purpose, yard: yard, purpose: @pet_yard)
@@ -99,7 +99,7 @@ RSpec.describe 'Pagination' do
     end
 
     it 'only shows 20 purposes' do
-      create_list(:purpose, 30)
+      create_list(:purpose, 21)
       get "/api/v1/purposes"
 
       expect(response).to be_successful
@@ -113,7 +113,7 @@ RSpec.describe 'Pagination' do
     end
 
     it 'only shows 20 yards by host' do
-      yards = create_list(:yard, 60)
+      yards = create_list(:yard, 21)
 
       get "/api/v1/hosts/1/yards"
       expect(response).to be_successful
@@ -127,8 +127,34 @@ RSpec.describe 'Pagination' do
       expect(yard_details[:data].first[:type]).to eq('yard')
     end
 
+    it 'only shows 20 bookings by host' do
+      get "/api/v1/hosts/1/bookings"
+      expect(response).to be_successful
+
+      bookings = JSON.parse(response.body, symbolize_names:true)
+
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:data]).to be_a(Array)
+      expect(bookings[:data].count).to eq(20)
+      expect(bookings[:data].first).to be_a(Hash)
+      expect(bookings[:data].first[:type]).to eq('booking')
+    end
+
+    it 'only shows 20 bookings by host and status' do
+      get "/api/v1/hosts/1/bookings?status=pending"
+      expect(response).to be_successful
+
+      bookings = JSON.parse(response.body, symbolize_names:true)
+
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:data]).to be_a(Array)
+      expect(bookings[:data].count).to eq(20)
+      expect(bookings[:data].first).to be_a(Hash)
+      expect(bookings[:data].first[:type]).to eq('booking')
+    end
+
     it 'defaults to 20 when passing a string in page param' do
-      yards = create_list(:yard, 60)
+      yards = create_list(:yard, 21)
 
       get "/api/v1/hosts/1/yards?page=number"
 
@@ -142,7 +168,7 @@ RSpec.describe 'Pagination' do
     end
 
     it 'defaults to 20 when nothing is passed in page param' do
-      yards = create_list(:yard, 60)
+      yards = create_list(:yard, 21)
 
       get "/api/v1/hosts/1/yards?page="
 
