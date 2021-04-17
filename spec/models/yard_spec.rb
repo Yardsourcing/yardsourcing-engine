@@ -40,8 +40,8 @@ RSpec.describe Yard, type: :model do
         yards1.last.purposes << [purposes.last, purposes.first]
         yards2 = create(:yard, zipcode: '45678')
         zipcode = '23456'
-        purpose_search1 = purposes.map(&:id)
-        purpose_search2 = [purposes.second.id]
+        purpose_search1 = purposes.map(&:name)
+        purpose_search2 = [purposes.second.name]
 
         results1 = Yard.yards_by_zipcode_and_purposes(zipcode, purpose_search1)
         results2 = Yard.yards_by_zipcode_and_purposes(zipcode, purpose_search2)

@@ -24,7 +24,7 @@ class Yard < ApplicationRecord
   def self.yards_by_zipcode_and_purposes(zipcode, purposes)
     joins(:purposes)
     .where(zipcode: zipcode)
-    .where('purposes.id in (?)', purposes)
+    .where('purposes.name in (?)', purposes)
     .distinct
   end
 end
