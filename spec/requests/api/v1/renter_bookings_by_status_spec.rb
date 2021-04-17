@@ -119,18 +119,6 @@ RSpec.describe 'Renter Bookings by Status API' do
       expect(bookings[:data].empty?).to eq(true)
     end
 
-    it 'errors out when no param is passed' do
-      booking = create(:booking, renter_id: 2)
-      create_list(:booking, 7, renter_id: 2)
-      create_list(:booking, 2, renter_id: 2)
-
-      get "/api/v1/renters/1/bookings"
-
-      bookings = JSON.parse(response.body, symbolize_names:true)
-      expect(bookings).to be_a(Hash)
-      expect(bookings[:error]).to eq("Need status")
-    end
-
     it 'errors out when param is passed with nothing' do
       booking = create(:booking, renter_id: 2)
       create_list(:booking, 7, renter_id: 2)
