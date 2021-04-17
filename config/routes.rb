@@ -19,6 +19,10 @@ Rails.application.routes.draw do
       namespace :renters do
         get '/:renter_id/bookings', to: 'bookings#index'
       end
+
+      namespace :hosts do
+        get '/:host_id/bookings', to: 'bookings#index'
+      end
     end
   end
 end
