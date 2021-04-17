@@ -62,12 +62,33 @@ RSpec.describe 'Yard API SPEC'do
       create_list(:booking, 7)
       create_list(:booking, 2)
       get "/api/v1/yards/#{yard.id}/bookings"
-      expect(response).to be_succesful
+      expect(response).to be_successful
       bookings = JSON.parse(response.body, symbolize_names:true)
       expect(bookings).to be_a(Hash)
-      expect(bookings[:data]).to be_an(Array)
+      expect(bookings[:data]).to be_an(Hash)
       expect(bookings[:data].empty?).to eq(true)
+    end
 
+    it 'errors out when you pass a string as a param' do
+      yard = create(:yard, id:1000)
+      booking = create(:booking)
+      create_list(:booking, 7)
+      create_list(:booking, 2)
+      get "/api/v1/yards/one/bookings"
+      bookings = JSON.parse(response.body, symbolize_names:true)
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:error]).to eq("String not accepted as id")
+    end
+
+    it 'returns something doesnt exist if it doesnt' do
+      get "/api/v1/yards/22/bookings"
+      expect(response.status).to eq(404)
+      expect(response.body).to eq('Record not found')
+    end
+
+    it 'errors out when no param is passed ' do
+      get "/api/v1/yards/bookings"
+      expect(response.status).to eq(400)
     end
   end
 end
