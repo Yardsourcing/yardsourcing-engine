@@ -87,7 +87,7 @@ RSpec.describe "Yard Search" do
       expect(json[:data].empty?).to eq(true)
     end
 
-    it "returns no yard records with no zipcode matches but has matching purposes" do
+    it "returns an empty array with no zipcode matches but has matching purposes" do
       yard_1 = create(:yard, zipcode: '19125')
       yard_2 = create(:yard, zipcode: '19125')
       yard_3 = create(:yard, zipcode: '19125')
@@ -116,7 +116,7 @@ RSpec.describe "Yard Search" do
 
       expect(response).to have_http_status(:bad_request)
       expect(json[:error]).to be_a(String)
-      expect(json[:error]).to eq("Invalid zipcode")
+      expect(json[:error]).to eq("Please enter a zipcode to search available yards")
     end
 
     it "returns an error when the location parameter is not sent" do
@@ -124,7 +124,7 @@ RSpec.describe "Yard Search" do
       pet_yard = create(:purpose, name: "Pet Yard")
       hobby_yard = create(:purpose, name: "Hobby Yard")
       yard_1.purposes << pet_yard
-      yard_1.purposes << pet_yard
+      yard_1.purposes << hobby_yard
 
       get "/api/v1/yards/yard_search?purposes[]=pet+yard&purposes[]=hobby+yard"
 

@@ -14,11 +14,11 @@ class Api::V1::Yards::SearchController < ApplicationController
   private
 
   def validate_search_params
-    if !params[:location].scan(/\D./).empty? || params[:location].length != 5
-      error = "Invalid zipcode"
-      render_error(error)
-    elsif params[:location].nil?
+    if params[:location].nil?
       error = "Please enter a zipcode to search available yards"
+      render_error(error)
+    elsif !params[:location].scan(/\D./).empty? || params[:location].length != 5
+      error = "Invalid zipcode"
       render_error(error)
     end
   end
