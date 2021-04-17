@@ -8,8 +8,9 @@ Rails.application.routes.draw do
       get '/yards/:id/bookings', to: 'yards/bookings#index'
       resources :yards, except: [:index] do
         # resources :bookings, only: [:index]
-        end
-      resources :bookings, only: [:show]
+      end
+
+      resources :bookings, only: [:show, :create, :update, :destroy]
 
       resources :hosts, only: [] do
         resources :yards, only: [:index]
