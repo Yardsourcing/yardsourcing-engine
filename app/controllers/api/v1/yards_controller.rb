@@ -3,7 +3,7 @@ class Api::V1::YardsController < ApplicationController
   before_action :validate_yard_params, only: [:show]
 
   def index
-    yards = Yard.where(host_id: params[:host_id])
+    yards = Yard.where(host_id: params[:host_id]).page params[:page]
     render json: YardSerializer.new(yards)
   end
 

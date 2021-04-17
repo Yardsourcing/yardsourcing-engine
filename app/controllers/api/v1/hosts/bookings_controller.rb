@@ -6,9 +6,9 @@ class Api::V1::Hosts::BookingsController < ApplicationController
     host_id = params[:host_id]
     status = params[:status]
     bookings = if status
-                  Booking.find_by_host_and_status(host_id, status)
+                  Booking.find_by_host_and_status(host_id, status).page params[:page]
                 else
-                  Booking.find_by_host(host_id)
+                  Booking.find_by_host(host_id).page params[:page]
                 end
     if bookings.empty?
       render json: NullSerializer.new
