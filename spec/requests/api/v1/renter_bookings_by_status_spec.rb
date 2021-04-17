@@ -21,7 +21,6 @@ RSpec.describe 'Renter Bookings by Status API' do
         expect(booking[:type]).to eq('booking')
         expect(booking[:attributes].count).to eq(8)
         expect(booking[:attributes]).to have_key(:status)
-        expect(booking[:attributes][:status]).to eq('pending')
         expect(booking[:attributes]).to have_key(:booking_name)
         expect(booking[:attributes]).to have_key(:date)
         expect(booking[:attributes]).to have_key(:description)
@@ -36,6 +35,7 @@ RSpec.describe 'Renter Bookings by Status API' do
         expect(booking[:attributes][:status]).to be_a(String)
         expect(booking[:attributes][:booking_name]).to be_a(String)
         expect(booking[:attributes][:time]).to be_a(String)
+        expect(booking[:attributes][:status]).to eq('pending')
       end
     end
 
@@ -53,7 +53,6 @@ RSpec.describe 'Renter Bookings by Status API' do
         expect(booking[:type]).to eq('booking')
         expect(booking[:attributes].count).to eq(8)
         expect(booking[:attributes]).to have_key(:status)
-        expect(booking[:attributes][:status]).to eq('rejected')
         expect(booking[:attributes]).to have_key(:booking_name)
         expect(booking[:attributes]).to have_key(:date)
         expect(booking[:attributes]).to have_key(:description)
@@ -68,6 +67,7 @@ RSpec.describe 'Renter Bookings by Status API' do
         expect(booking[:attributes][:status]).to be_a(String)
         expect(booking[:attributes][:booking_name]).to be_a(String)
         expect(booking[:attributes][:time]).to be_a(String)
+        expect(booking[:attributes][:status]).to eq('rejected')
       end
     end
 
@@ -85,7 +85,6 @@ RSpec.describe 'Renter Bookings by Status API' do
         expect(booking[:type]).to eq('booking')
         expect(booking[:attributes].count).to eq(8)
         expect(booking[:attributes]).to have_key(:status)
-        expect(booking[:attributes][:status]).to eq('approved')
         expect(booking[:attributes]).to have_key(:booking_name)
         expect(booking[:attributes]).to have_key(:date)
         expect(booking[:attributes]).to have_key(:description)
@@ -100,10 +99,48 @@ RSpec.describe 'Renter Bookings by Status API' do
         expect(booking[:attributes][:status]).to be_a(String)
         expect(booking[:attributes][:booking_name]).to be_a(String)
         expect(booking[:attributes][:time]).to be_a(String)
+        expect(booking[:attributes][:status]).to eq('approved')
       end
     end
   end
 
   describe 'sad path' do
+    it 'returns an empty array if no bookings exist' do
+      booking = create(:booking, renter_id: 2)
+      create_list(:booking, 7, renter_id: 2)
+      create_list(:booking, 2, renter_id: 2)
+
+      get "/api/v1/renters/3/bookings?status=pending"
+
+      expect(response).to be_successful
+      bookings = JSON.parse(response.body, symbolize_names:true)
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:data]).to be_a(Hash)
+      expect(bookings[:data].empty?).to eq(true)
+    end
+
+    it 'errors out when no param is passed' do
+      booking = create(:booking, renter_id: 2)
+      create_list(:booking, 7, renter_id: 2)
+      create_list(:booking, 2, renter_id: 2)
+
+      get "/api/v1/renters/1/bookings"
+
+      bookings = JSON.parse(response.body, symbolize_names:true)
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:error]).to eq("Need status")
+    end
+
+    it 'errors out when param is passed with nothing' do
+      booking = create(:booking, renter_id: 2)
+      create_list(:booking, 7, renter_id: 2)
+      create_list(:booking, 2, renter_id: 2)
+
+      get "/api/v1/renters/1/bookings?status="
+
+      bookings = JSON.parse(response.body, symbolize_names:true)
+      expect(bookings).to be_a(Hash)
+      expect(bookings[:error]).to eq("Need status")
+    end
   end
 end

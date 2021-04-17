@@ -14,7 +14,7 @@ class Api::V1::Renters::BookingsController < ApplicationController
 
   private
   def validate_params
-    if params[:status].nil?
+    if params[:status].nil? || params[:status].empty?
       render json: {error: "Need status"}, status: :bad_request
     end
   end
