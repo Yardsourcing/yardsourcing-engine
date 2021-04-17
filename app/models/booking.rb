@@ -19,11 +19,12 @@ class Booking < ApplicationRecord
   end
 
   def self.find_by_renter_and_status(renter_id, status)
-    where('renter_id = ? and status = ?', renter_id, Booking.statuses[status.to_sym])
+    where(renter_id: renter_id)
+    .where(status: status)
   end
 
   def self.find_by_renter(renter_id)
-    where('renter_id = ?', renter_id)
+    where(renter_id: renter_id)
   end
 
   def self.find_by_host_and_status(host_id, status)
