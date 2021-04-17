@@ -20,9 +20,9 @@ RSpec.describe 'Bookings API SPEC'do
         expect(booking[:data][:attributes]).to have_key(:duration)
         expect(booking[:data][:attributes]).to have_key(:time)
         expect(booking[:data][:attributes]).to have_key(:renter_id)
-        expect(booking[:data][:attributes]).to have_key(:booking_id)
+        expect(booking[:data][:attributes]).to have_key(:yard_id)
         expect(booking[:data][:attributes][:renter_id]).to be_a(Integer)
-        expect(booking[:data][:attributes][:booking_id]).to be_a(Integer)
+        expect(booking[:data][:attributes][:yard_id]).to be_a(Integer)
         expect(booking[:data][:attributes][:duration]).to be_a(Integer)
         expect(booking[:data][:attributes][:description]).to be_a(String)
         expect(booking[:data][:attributes][:status]).to be_a(String)
@@ -38,7 +38,7 @@ RSpec.describe 'Bookings API SPEC'do
         expect(response).to be_successful
         booking = JSON.parse(response.body, symbolize_names:true)
         expect(booking[:data][:attributes][:renter_id]).to eq(special_booking.renter_id)
-        expect(booking[:data][:attributes][:booking_id]).to eq(special_booking.booking_id)
+        expect(booking[:data][:attributes][:yard_id]).to eq(special_booking.yard_id)
         expect(booking[:data][:attributes][:duration]).to eq(special_booking.duration)
         expect(booking[:data][:attributes][:status]).to eq(special_booking.status)
         expect(booking[:data][:attributes][:booking_name]).to eq(special_booking.booking_name)
@@ -88,41 +88,34 @@ RSpec.describe 'Bookings API SPEC'do
       expect(response).to be_successful
       expect(created_booking.yard_id).to eq(booking_params[:yard_id])
       expect(created_booking.renter_id).to eq(booking_params[:renter_id])
-      expect(created_booking.status).to eq(booking_params[:status])
+      expect(created_booking.status).to eq(booking_params[:status].to_s)
       expect(created_booking.booking_name).to eq(booking_params[:booking_name])
       expect(created_booking.date).to eq(booking_params[:date])
-      expect(created_booking.time).to eq(booking_params[:time])
+      expect(created_booking.time.strftime("%H:%M")).to eq(booking_params[:time])
       expect(created_booking.duration).to eq(booking_params[:duration])
       expect(created_booking.description).to eq(booking_params[:description])
 
       expect(response).to have_http_status(:created)
       booking = JSON.parse(response.body, symbolize_names: true)
     end
-    #
-    # it "Won't create a new booking with missing information" do
-    #   purposes = create_list(:purpose, 3)
-    #   booking_params = ({
-    #                   id: 1,
-    #                   street_address: "123 Fake St.",
-    #                   city: "Denver",
-    #                   state: "CO",
-    #                   zipcode: '12345',
-    #                   price: 20.00,
-    #                   description: 'description',
-    #                   availability: 'availability',
-    #                   payment: 'venmo',
-    #                   photo_url_1: 'url1',
-    #                   photo_url_2: 'url2',
-    #                   photo_url_3: 'url3',
-    #                   purposes: [purposes.first.id, purposes.last.id]
-    #                 })
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #
-    #   post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
-    #
-    #   expect(response).to have_http_status(:not_found)
-    # end
-    #
+
+    it "Won't create a new booking with missing information" do
+      booking_params = ({
+        renter_id: 1,
+        status: :pending,
+        booking_name: "Super Fun Time, BBQ",
+        date: Date.new(2021,04,25),
+        time: Time.new(2021, 04, 25, 14).strftime("%H:%M"),
+        duration: 3,
+        description: "Gonna be a super great cookout! BYOB"
+        })
+      headers = {"CONTENT_TYPE" => "application/json"}
+
+      post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
     # it "Won't create a new booking when there are no purposes" do
     #   booking_params = ({
     #                   id: 1,
