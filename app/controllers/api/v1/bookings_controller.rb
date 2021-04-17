@@ -17,6 +17,10 @@ class Api::V1::BookingsController < ApplicationController
     render json: BookingSerializer.new(booking)
   end
 
+  def destroy
+    render json: Booking.destroy(params[:id])
+  end
+
   private
   def validate_params
     if params[:id].to_i == 0

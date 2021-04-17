@@ -161,87 +161,17 @@ RSpec.describe 'Bookings API SPEC'do
       expect(response).to_not be_successful
       expect(response.code).to eq("404")
     end
-    #
-    # it "can update the purposes on an existing booking" do
-    #   BookingPurpose.destroy_all
-    #   purposes = create_list(:purpose, 3)
-    #   booking_params = ({
-    #                   id: 1,
-    #                   host_id: 1,
-    #                   name: 'booking',
-    #                   street_address: '123 Fake St.',
-    #                   city: 'Denver',
-    #                   state: 'CO',
-    #                   zipcode: '12345',
-    #                   price: 20.00,
-    #                   description: 'description',
-    #                   availability: 'availability',
-    #                   payment: 'venmo',
-    #                   photo_url_1: 'url1',
-    #                   photo_url_2: 'url2',
-    #                   photo_url_3: 'url3'
-    #                 })
-    #   booking = Booking.create!(booking_params)
-    #   create(:booking_purpose, booking: booking, purpose: purposes.first)
-    #
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #   new_booking_params = ({
-    #                   purposes: [purposes.first.id,purposes.second.id, purposes.last.id]
-    #                 })
-    #   patch "/api/v1/bookings/#{booking.id}", headers: headers, params: JSON.generate({booking: new_booking_params})
-    #   booking = Booking.find_by(id: booking.id)
-    #   expect(response).to be_successful
-    #
-    #   expect(booking.purposes.find(purposes.first.id)).to eq(purposes.first)
-    #   expect(booking.purposes.find(purposes.second.id)).to eq(purposes.second)
-    #   expect(booking.purposes.find(purposes.last.id)).to eq(purposes.last)
-    # end
-    #
-    # it "can delete the purposes on an existing booking that are no longer checked" do
-    #   BookingPurpose.destroy_all
-    #   purposes = create_list(:purpose, 3)
-    #   booking_params = ({
-    #                   id: 1,
-    #                   host_id: 1,
-    #                   name: 'booking',
-    #                   street_address: '123 Fake St.',
-    #                   city: 'Denver',
-    #                   state: 'CO',
-    #                   zipcode: '12345',
-    #                   price: 20.00,
-    #                   description: 'description',
-    #                   availability: 'availability',
-    #                   payment: 'venmo',
-    #                   photo_url_1: 'url1',
-    #                   photo_url_2: 'url2',
-    #                   photo_url_3: 'url3'
-    #                 })
-    #   booking = Booking.create!(booking_params)
-    #   create(:booking_purpose, booking: booking, purpose: purposes.first)
-    #
-    #   headers = {"CONTENT_TYPE" => "application/json"}
-    #   new_booking_params = ({
-    #                   purposes: [purposes.second.id, purposes.last.id]
-    #                 })
-    #   patch "/api/v1/bookings/#{booking.id}", headers: headers, params: JSON.generate({booking: new_booking_params})
-    #   booking = Booking.find_by(id: booking.id)
-    #   expect(response).to be_successful
-    #
-    #   expect(booking.purposes.where(id: purposes.first.id)).to eq([])
-    #   expect(booking.purposes.find(purposes.second.id)).to eq(purposes.second)
-    #   expect(booking.purposes.find(purposes.last.id)).to eq(purposes.last)
-    # end
-    #
-    # it "can destroy an booking" do
-    #   booking = create(:booking)
-    #
-    #   expect(Booking.count).to eq(1)
-    #
-    #   delete "/api/v1/bookings/#{booking.id}"
-    #
-    #   expect(response).to be_successful
-    #   expect(Booking.count).to eq(0)
-    #   expect{Booking.find(booking.id)}.to raise_error(ActiveRecord::RecordNotFound)
-    # end
+
+    it "can destroy an booking" do
+      booking = create(:booking)
+    
+      expect(Booking.count).to eq(1)
+
+      delete "/api/v1/bookings/#{booking.id}"
+
+      expect(response).to be_successful
+      expect(Booking.count).to eq(0)
+      expect{Booking.find(booking.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end

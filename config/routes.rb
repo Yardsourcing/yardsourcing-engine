@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       get '/yards/yard_search', to: 'yards/search#index'
 
       resources :yards, except: [:index]
-      resources :bookings, only: [:show, :create, :update]
+      resources :bookings, only: [:show, :create, :update, :destroy]
 
       resources :hosts, only: [] do
         resources :yards, only: [:index]
