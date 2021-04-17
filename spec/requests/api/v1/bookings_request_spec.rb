@@ -164,7 +164,7 @@ RSpec.describe 'Bookings API SPEC'do
 
     it "can destroy an booking" do
       booking = create(:booking)
-    
+
       expect(Booking.count).to eq(1)
 
       delete "/api/v1/bookings/#{booking.id}"
