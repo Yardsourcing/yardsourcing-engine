@@ -4,6 +4,7 @@ class EmailService
       req.headers["CONTENT_TYPE"] = "application/json"
       req.params = {to: to, from: from, subject: subject, content: content}
     end
+
     return true if response.status == 202
     false
   end
