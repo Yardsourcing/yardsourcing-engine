@@ -54,7 +54,7 @@ class Api::V1::YardsController < ApplicationController
   private
 
   def yard_purposes
-    params[:yard][:purposes]
+    params[:purposes]
   end
 
   def validate_yard_params
@@ -70,18 +70,18 @@ class Api::V1::YardsController < ApplicationController
   end
 
   def yard_params
-    params.require(:yard).permit(:host_id,
-                                :name,
-                                :street_address,
-                                :city,
-                                :state,
-                                :zipcode,
-                                :price,
-                                :description,
-                                :availability,
-                                :payment,
-                                :photo_url_1,
-                                :photo_url_2,
-                                :photo_url_3,)
+    params.permit(:host_id,
+                  :name,
+                  :street_address,
+                  :city,
+                  :state,
+                  :zipcode,
+                  :price,
+                  :description,
+                  :availability,
+                  :payment,
+                  :photo_url_1,
+                  :photo_url_2,
+                  :photo_url_3,)
   end
 end
