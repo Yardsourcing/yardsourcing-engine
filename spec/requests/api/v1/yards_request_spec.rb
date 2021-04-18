@@ -99,7 +99,7 @@ RSpec.describe "Yards API Endpoints" do
                     })
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+      post "/api/v1/yards", headers: headers, params: JSON.generate(yard_params)
       created_yard = Yard.last
 
       expect(response).to be_successful
@@ -142,7 +142,7 @@ RSpec.describe "Yards API Endpoints" do
                     })
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+      post "/api/v1/yards", headers: headers, params: JSON.generate(yard_params)
 
       expect(response).to have_http_status(:not_found)
     end
@@ -166,7 +166,7 @@ RSpec.describe "Yards API Endpoints" do
                     })
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      post "/api/v1/yards", headers: headers, params: JSON.generate(yard: yard_params)
+      post "/api/v1/yards", headers: headers, params: JSON.generate(yard_params)
       returned_json = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:not_acceptable)
@@ -184,7 +184,7 @@ RSpec.describe "Yards API Endpoints" do
       headers = {"CONTENT_TYPE" => "application/json"}
       expect(yard.purposes.count).to eq(3)
 
-      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate(yard_params)
 
       yard = Yard.find_by(id: id)
       expect(response).to be_successful
@@ -203,7 +203,7 @@ RSpec.describe "Yards API Endpoints" do
       headers = {"CONTENT_TYPE" => "application/json"}
       expect(yard.purposes.count).to eq(2)
 
-      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate(yard_params)
 
       yard = Yard.find_by(id: id)
       expect(response).to be_successful
@@ -222,7 +222,7 @@ RSpec.describe "Yards API Endpoints" do
       headers = {"CONTENT_TYPE" => "application/json"}
       expect(yard.purposes.count).to eq(3)
 
-      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate(yard_params)
       yard = Yard.find_by(id: id)
       returned_json = JSON.parse(response.body, symbolize_names: true)
 
@@ -238,7 +238,7 @@ RSpec.describe "Yards API Endpoints" do
       yard_params = { name: "New Name" }
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      patch "/api/v1/yards/#{99999999}", headers: headers, params: JSON.generate({yard: yard_params})
+      patch "/api/v1/yards/#{99999999}", headers: headers, params: JSON.generate(yard_params)
       expect(response).to_not be_successful
       expect(response).to have_http_status(:not_found)
     end
@@ -261,7 +261,7 @@ RSpec.describe "Yards API Endpoints" do
                     })
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate({yard: yard_params})
+      patch "/api/v1/yards/#{id}", headers: headers, params: JSON.generate(yard_params)
 
       expect(response).to_not be_successful
       expect(response.code).to eq("404")
@@ -293,7 +293,7 @@ RSpec.describe "Yards API Endpoints" do
       new_yard_params = ({
                       purposes: [purposes.first.id,purposes.second.id, purposes.last.id]
                     })
-      patch "/api/v1/yards/#{yard.id}", headers: headers, params: JSON.generate({yard: new_yard_params})
+      patch "/api/v1/yards/#{yard.id}", headers: headers, params: JSON.generate(new_yard_params)
       yard = Yard.find_by(id: yard.id)
       expect(response).to be_successful
 
@@ -328,7 +328,7 @@ RSpec.describe "Yards API Endpoints" do
       new_yard_params = ({
                       purposes: [purposes.second.id, purposes.last.id]
                     })
-      patch "/api/v1/yards/#{yard.id}", headers: headers, params: JSON.generate({yard: new_yard_params})
+      patch "/api/v1/yards/#{yard.id}", headers: headers, params: JSON.generate(new_yard_params)
       yard = Yard.find_by(id: yard.id)
       expect(response).to be_successful
 
