@@ -4,8 +4,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :purposes, only: [:index]
 
-      get '/yards/yard_search', to: 'yards/search#index'
-      get '/yards/:id/bookings', to: 'yards/bookings#index'
+      namespace :yards do
+        get '/yard_search', to: 'search#search'
+        get '/:id/bookings', to: 'bookings#index'
+      end
       resources :yards, except: [:index] do
         # resources :bookings, only: [:index]
       end
