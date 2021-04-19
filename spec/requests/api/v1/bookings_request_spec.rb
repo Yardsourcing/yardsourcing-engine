@@ -118,7 +118,12 @@ RSpec.describe 'Bookings API SPEC'do
 
       post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
 
+      error = JSON.parse(response.body, symbolize_names:true)
+      error_message = "Validation failed: Yard must exist, Renter email can't be blank, Renter email is invalid"
+
       expect(response).to have_http_status(:not_found)
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("#{error_message}")
     end
 
     it "can update an existing booking" do
