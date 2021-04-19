@@ -29,5 +29,31 @@ RSpec.describe EmailService do
         end
       end
     end
+
+    describe ".Approved_booking" do
+      it "make an api call to YS Microservice when called" do
+        VCR.use_cassette('approved_booking_email') do
+          yard = create(:yard, id: 1)
+          booking = create(:booking, id: 1, yard_id: yard.id)
+          response = EmailService.approved_booking(booking.id)
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(response.status).to eq(202)
+          expect(body[:message]).to eq("Message sent successfully")
+        end
+      end
+    end
+
+    describe ".Rejected_booking" do
+      it "make an api call to YS Microservice when called" do
+        VCR.use_cassette('rejected_booking_email') do
+          yard = create(:yard, id: 1)
+          booking = create(:booking, id: 1, yard_id: yard.id)
+          response = EmailService.rejected_booking(booking.id)
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(response.status).to eq(202)
+          expect(body[:message]).to eq("Message sent successfully")
+        end
+      end
+    end
   end
 end
