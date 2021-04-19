@@ -60,9 +60,13 @@ RSpec.describe 'Bookings API SPEC'do
       it 'should return an empty array if no ids exist' do
         create_list(:booking, 10)
         booking = create(:booking, status: :approved, booking_name: "fun", duration:100)
-        get "/api/v1/bookings/100000000"
+        bad_id = 100000000
+        get "/api/v1/bookings/#{bad_id}"
+        error = JSON.parse(response.body, symbolize_names:true)
+
         expect(response.status).to eq(404)
-        expect(response.body).to eq("Record not found")
+        expect(error).to have_key(:error)
+        expect(error[:error]).to eq("Couldn't find Booking with 'id'=#{bad_id}")
       end
     end
   end
@@ -114,7 +118,12 @@ RSpec.describe 'Bookings API SPEC'do
 
       post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
 
+      error = JSON.parse(response.body, symbolize_names:true)
+      error_message = "Validation failed: Yard must exist, Renter email can't be blank, Renter email is invalid"
+
       expect(response).to have_http_status(:not_found)
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("#{error_message}")
     end
 
     it "can update an existing booking" do

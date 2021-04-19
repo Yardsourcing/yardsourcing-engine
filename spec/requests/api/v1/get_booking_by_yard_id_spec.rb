@@ -79,9 +79,13 @@ RSpec.describe 'Yard API SPEC'do
     end
 
     it 'returns something doesnt exist if it doesnt' do
-      get "/api/v1/yards/22/bookings"
+      bad_id = 22
+      get "/api/v1/yards/#{bad_id}/bookings"
+
+      error = JSON.parse(response.body, symbolize_names:true)
       expect(response.status).to eq(404)
-      expect(response.body).to eq('Record not found')
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("Couldn't find Yard with 'id'=#{bad_id}")
     end
 
     it 'errors out when no param is passed ' do
