@@ -1,18 +1,14 @@
 class EmailService
 
   def self.new_booking(booking_id)
-    booking = Booking.find(booking_id)
-    renter_email = booking.renter_email
-    host_email = booking.yard.host_email
-    subject = "New booking request for #{booking.yard.name} (ID #{booking.yard.id}) - Booking ID#{booking_id}"
-    content = "Someone wants to rent your Yard!\nDetails:\n(booking details)"
-  end
-
-  def self.approved_booking
 
   end
 
-  def self.rejected_booking
+  def self.approved_booking(booking_id)
+
+  end
+
+  def self.rejected_booking(booking_id)
 
   end
 
