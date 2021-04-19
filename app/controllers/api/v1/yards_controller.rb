@@ -71,6 +71,7 @@ class Api::V1::YardsController < ApplicationController
 
   def yard_params
     params.permit(:host_id,
+                  :email,
                   :name,
                   :street_address,
                   :city,

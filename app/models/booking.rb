@@ -14,6 +14,8 @@ class Booking < ApplicationRecord
 
   validate :date_cant_be_in_the_past
 
+  validates :renter_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+
   def date_cant_be_in_the_past
     errors.add(:date, "Booking Date can't be in the past") if date && date < Date.today
   end

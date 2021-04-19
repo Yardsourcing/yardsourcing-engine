@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :yard do
     host_id { 1 }
+    email { 'host_email@domain.com'}
     name { "My Yard" }
     street_address { "123 Fake St" }
     city { "Denver" }
