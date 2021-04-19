@@ -68,36 +68,38 @@ RSpec.describe 'Bookings API SPEC'do
   end
   describe "CRUD Functionality" do
     it "can create a new booking" do
-      yard = create(:yard)
-      booking_params = ({
-        yard_id: yard.id,
-        renter_id: 1,
-        renter_email: 'email@domain.com',
-        status: :pending,
-        booking_name: "Super Fun Time, BBQ",
-        date: Date.new(2021,04,25),
-        time: Time.new(2021, 04, 25, 14).strftime("%H:%M"),
-        duration: 3,
-        description: "Gonna be a super great cookout! BYOB"
-        })
+      VCR.use_cassette("new_booking") do
+        yard = create(:yard)
+        booking_params = ({
+          yard_id: yard.id,
+          renter_id: 1,
+          renter_email: 'email@domain.com',
+          status: :pending,
+          booking_name: "Super Fun Time, BBQ",
+          date: Date.new(2021,04,25),
+          time: Time.new(2021, 04, 25, 14).strftime("%H:%M"),
+          duration: 3,
+          description: "Gonna be a super great cookout! BYOB"
+          })
 
-      headers = {"CONTENT_TYPE" => "application/json"}
+        headers = {"CONTENT_TYPE" => "application/json"}
 
-      post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
-      created_booking = Booking.last
+        post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
+        created_booking = Booking.last
 
-      expect(response).to be_successful
-      expect(created_booking.yard_id).to eq(booking_params[:yard_id])
-      expect(created_booking.renter_id).to eq(booking_params[:renter_id])
-      expect(created_booking.status).to eq(booking_params[:status].to_s)
-      expect(created_booking.booking_name).to eq(booking_params[:booking_name])
-      expect(created_booking.date).to eq(booking_params[:date])
-      expect(created_booking.time.strftime("%H:%M")).to eq(booking_params[:time])
-      expect(created_booking.duration).to eq(booking_params[:duration])
-      expect(created_booking.description).to eq(booking_params[:description])
+        expect(response).to be_successful
+        expect(created_booking.yard_id).to eq(booking_params[:yard_id])
+        expect(created_booking.renter_id).to eq(booking_params[:renter_id])
+        expect(created_booking.status).to eq(booking_params[:status].to_s)
+        expect(created_booking.booking_name).to eq(booking_params[:booking_name])
+        expect(created_booking.date).to eq(booking_params[:date])
+        expect(created_booking.time.strftime("%H:%M")).to eq(booking_params[:time])
+        expect(created_booking.duration).to eq(booking_params[:duration])
+        expect(created_booking.description).to eq(booking_params[:description])
 
-      expect(response).to have_http_status(:created)
-      booking = JSON.parse(response.body, symbolize_names: true)
+        expect(response).to have_http_status(:created)
+        booking = JSON.parse(response.body, symbolize_names: true)
+      end
     end
 
     it "Won't create a new booking with missing information" do
