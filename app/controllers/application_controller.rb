@@ -13,4 +13,19 @@ class ApplicationController < ActionController::API
   def render_error(error, status = :bad_request)
     render json: { message: "your request cannot be completed", error: error}, status: status
   end
+
+  private
+  
+  def validate_id
+    id = :"#{params.keys.grep(/id/)[0]}"
+    error = "String not accepted as id"
+    render_error(error) if params[id].to_i == 0
+  end
+
+  def validate_status
+    if !params[:status].nil? && params[:status].empty?
+      error = "Need status"
+      render_error(error)
+    end
+  end
 end
