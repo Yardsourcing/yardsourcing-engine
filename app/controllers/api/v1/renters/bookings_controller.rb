@@ -21,13 +21,15 @@ class Api::V1::Renters::BookingsController < ApplicationController
 
   def validate_status
     if !params[:status].nil? && params[:status].empty?
-      render json: {error: "Need status"}, status: :bad_request
+      error = "Need status"
+      render_error(error)
     end
   end
 
   def validate_renter_id
     if params[:renter_id].to_i == 0
-      render json: {error: "String not accepted as id"}, status: :bad_request
+      error = "String not accepted as id"
+      render_error(error)
     end
   end
 end

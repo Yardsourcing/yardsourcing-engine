@@ -14,7 +14,8 @@ class Api::V1::Yards::BookingsController < ApplicationController
   private
   def validate_params
     if params[:id].to_i == 0
-      render json: {error: "String not accepted as id"}, status: :bad_request
+      error = "String not accepted as id"
+      render_error(error)
     end
   end
 end
