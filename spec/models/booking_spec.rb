@@ -13,6 +13,7 @@ RSpec.describe Booking, type: :model do
     it { should validate_presence_of :time }
     it { should validate_presence_of :duration }
     it { should validate_presence_of :description }
+    it { should validate_presence_of :renter_email }
     it { should validate_numericality_of(:renter_id).is_greater_than_or_equal_to(0) }
 
     it "should throw an error if the date is in the past (before today's date)" do
@@ -77,6 +78,21 @@ RSpec.describe Booking, type: :model do
       booking2 = create(:booking, status: :approved, yard_id: yard.id)
       booking3 = create(:booking, status: :rejected, yard_id: yard.id)
       expect(Booking.find_by_host(1)).to eq([booking1, booking2, booking3])
+    end
+
+    it 'should throw an error if the email is not in the standard format' do
+      yard = create(:yard)
+      booking = yard.bookings.new(
+        renter_email: "Not an Eamil",
+        status: :pending,
+        booking_name: "My Booking",
+        date: Time.new(2020),
+        time: Time.now,
+        duration: 2,
+        description: ""
+      )
+      expect(booking.save).to eq(false)
+      expect(booking.errors[:renter_email].to_sentence).to eq("is invalid")
     end
   end
 end

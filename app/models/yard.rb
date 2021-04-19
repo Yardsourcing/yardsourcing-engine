@@ -17,6 +17,8 @@ class Yard < ApplicationRecord
                         :availability,
                         :payment
 
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+
   def self.by_zipcode(zipcode)
     where(zipcode: zipcode)
   end

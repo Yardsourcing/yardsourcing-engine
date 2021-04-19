@@ -10,6 +10,7 @@ RSpec.describe Yard, type: :model do
   describe 'validations' do
     it { should validate_presence_of :host_id }
     it { should validate_presence_of :name }
+    it { should validate_presence_of :email }
     it { should validate_presence_of :street_address }
     it { should validate_presence_of :city }
     it { should validate_presence_of :state }
@@ -19,6 +20,12 @@ RSpec.describe Yard, type: :model do
     it { should validate_presence_of :payment }
     it { should validate_numericality_of(:host_id).is_greater_than_or_equal_to(0) }
     it { should validate_numericality_of(:price).is_greater_than_or_equal_to(0) }
+
+    it 'should throw an error if the email is not in the standard format' do
+      yard = Yard.create(host_id: 1, name: "name", email: "Not an email", street_address: "123 ABC st.", city: "city", state: "CA", zipcode: "12345", price: 25.50, availability: "anytime", payment: "rubies only")
+
+      expect(yard.errors[:email].to_sentence).to eq("is invalid")
+    end
   end
 
   describe 'class methods' do

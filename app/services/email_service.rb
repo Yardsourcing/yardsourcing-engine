@@ -1,4 +1,21 @@
 class EmailService
+
+  def self.new_booking(booking_id)
+    booking = Booking.find(booking_id)
+    renter_email = booking.renter_email
+    host_email = booking.yard.host_email
+    subject = "New booking request for #{booking.yard.name} (ID #{booking.yard.id}) - Booking ID#{booking_id}"
+    content = "Someone wants to rent your Yard!\nDetails:\n(booking details)"
+  end
+
+  def self.approved_booking
+
+  end
+
+  def self.rejected_booking
+
+  end
+
   def self.send_email(to, from, subject, content)
     response = connection.post('/api/v1/mail') do |req|
       req.headers["CONTENT_TYPE"] = "application/json"
@@ -12,7 +29,4 @@ class EmailService
   def self.connection
     Faraday.new(url: "https://peaceful-bastion-57477.herokuapp.com")
   end
-
-  # "http://localhost:9292"
-  # "https://peaceful-bastion-57477.herokuapp.com"
 end

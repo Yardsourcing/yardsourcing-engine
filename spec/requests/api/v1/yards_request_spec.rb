@@ -83,6 +83,7 @@ RSpec.describe "Yards API Endpoints" do
       yard_params = ({
                       id: 1,
                       host_id: 1,
+                      email: "host_eamil@domain.com",
                       name: 'yard',
                       street_address: '123 Fake St.',
                       city: 'Denver',
@@ -273,6 +274,7 @@ RSpec.describe "Yards API Endpoints" do
       yard_params = ({
                       id: 1,
                       host_id: 1,
+                      email: "host_email@domain.com",
                       name: 'yard',
                       street_address: '123 Fake St.',
                       city: 'Denver',
@@ -308,6 +310,7 @@ RSpec.describe "Yards API Endpoints" do
       yard_params = ({
                       id: 1,
                       host_id: 1,
+                      email: "host_email@domain.com",
                       name: 'yard',
                       street_address: '123 Fake St.',
                       city: 'Denver',

@@ -72,6 +72,7 @@ RSpec.describe 'Bookings API SPEC'do
       booking_params = ({
         yard_id: yard.id,
         renter_id: 1,
+        renter_email: 'email@domain.com',
         status: :pending,
         booking_name: "Super Fun Time, BBQ",
         date: Date.new(2021,04,25),
