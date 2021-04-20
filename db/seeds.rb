@@ -166,6 +166,15 @@ yard5.bookings.create(id:7,
                       time: Time.new(2021,04,25,20).strftime("%H:%M"),
                       duration: 5,
                       description: 'Trying to throw a rager with my friends again.')
+yard5.bookings.create(id: 8,
+                      renter_id: 1,
+                      renter_email: "email@domain.com",
+                      status: :pending,
+                      booking_name: 'Country Throw Down Part 2',
+                      date: Date.new(2021,04,25),
+                      time: Time.new(2021,04,25,20).strftime("%H:%M"),
+                      duration: 5,
+                      description: 'Trying to throw a rager with my friends again.')
 
 ActiveRecord::Base.connection.tables.each do |t|
   ActiveRecord::Base.connection.reset_pk_sequence!(t)
