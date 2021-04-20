@@ -119,19 +119,36 @@ RSpec.describe 'Bookings API SPEC'do
       expect(response).to have_http_status(:not_found)
     end
 
-    it "can update an existing booking" do
-      booking = create(:booking)
-      id = booking.id
-      previous_name = Booking.last.booking_name
-      booking_params = { booking_name: "New Name" }
-      headers = {"CONTENT_TYPE" => "application/json"}
+    it "can update an existing booking to approved" do
+      VCR.use_cassette('approved_booking') do
+        booking = create(:booking)
+        id = booking.id
+        booking_params = { status: :approved }
+        headers = {"CONTENT_TYPE" => "application/json"}
 
-      put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+        put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
 
-      booking = Booking.find_by(id: id)
-      expect(response).to be_successful
-      expect(booking.booking_name).to_not eq(previous_name)
-      expect(booking.booking_name).to eq(booking_params[:booking_name])
+        booking = Booking.find_by(id: id)
+        expect(response).to be_successful
+        expect(booking.pending?).to_not eq(true)
+        expect(booking.approved?).to eq(true)
+      end
+    end
+
+    it "can update an existing booking to rejected" do
+      VCR.use_cassette('rejected_booking') do
+        booking = create(:booking)
+        id = booking.id
+        booking_params = { status: :rejected }
+        headers = {"CONTENT_TYPE" => "application/json"}
+
+        put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+
+        booking = Booking.find_by(id: id)
+        expect(response).to be_successful
+        expect(booking.pending?).to_not eq(true)
+        expect(booking.rejected?).to eq(true)
+      end
     end
 
     it "can't update an booking that doesn't exist" do

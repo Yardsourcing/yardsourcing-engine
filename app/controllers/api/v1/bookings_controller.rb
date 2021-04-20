@@ -11,14 +11,17 @@ class Api::V1::BookingsController < ApplicationController
     if booking.save!
       EmailService.new_booking(booking.id)
       render json: BookingSerializer.new(booking), status: :created
-    else
-      render json: {error: "There was an error processing your request"}, status: :bad_request
     end
   end
 
   def update
     booking = Booking.find(params[:id])
     booking.update!(booking_params)
+    if booking.approved?
+      EmailService.approved_booking(booking.id)
+    elsif booking.rejected?
+      EmailService.rejected_booking(booking.id)
+    end
     render json: BookingSerializer.new(booking)
   end
 
