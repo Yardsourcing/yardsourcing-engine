@@ -28,6 +28,6 @@ class EmailService
   end
 
   def self.connection
-    Faraday.new(url: "https://peaceful-bastion-57477.herokuapp.com")
+    Faraday.new(url: ENV['EMAIL_MICROSERVICE'])
   end
 end
