@@ -7,9 +7,7 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   def create
-    binding.pry
     booking = Booking.create!(booking_params)
-
     render json: BookingSerializer.new(booking), status: :created
   end
 
