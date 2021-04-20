@@ -144,8 +144,12 @@ RSpec.describe "Yards API Endpoints" do
       headers = {"CONTENT_TYPE" => "application/json"}
 
       post "/api/v1/yards", headers: headers, params: JSON.generate(yard_params)
+      error = JSON.parse(response.body, symbolize_names:true)
+      error_message = "Validation failed: Host can't be blank, Host is not a number, Name can't be blank, Email can't be blank, Email is invalid"
 
       expect(response).to have_http_status(:not_found)
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("#{error_message}")
     end
 
     it "Won't create a new yard when there are no purposes" do
