@@ -87,7 +87,7 @@ RSpec.describe 'Bookings API SPEC'do
 
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
+      post "/api/v1/bookings", headers: headers, params: JSON.generate(booking_params)
       created_booking = Booking.last
 
       expect(response).to be_successful
@@ -116,7 +116,7 @@ RSpec.describe 'Bookings API SPEC'do
         })
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      post "/api/v1/bookings", headers: headers, params: JSON.generate(booking: booking_params)
+      post "/api/v1/bookings", headers: headers, params: JSON.generate(booking_params)
 
       error = JSON.parse(response.body, symbolize_names:true)
       error_message = "Validation failed: Yard must exist, Renter email can't be blank, Renter email is invalid"
@@ -133,7 +133,7 @@ RSpec.describe 'Bookings API SPEC'do
       booking_params = { booking_name: "New Name" }
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+      put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate(booking_params)
 
       booking = Booking.find_by(id: id)
       expect(response).to be_successful
@@ -145,7 +145,7 @@ RSpec.describe 'Bookings API SPEC'do
       booking_params = { name: "New Name" }
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      patch "/api/v1/bookings/#{99999999}", headers: headers, params: JSON.generate({booking: booking_params})
+      patch "/api/v1/bookings/#{99999999}", headers: headers, params: JSON.generate(booking_params)
       expect(response).to_not be_successful
       expect(response).to have_http_status(:not_found)
     end
@@ -166,7 +166,7 @@ RSpec.describe 'Bookings API SPEC'do
         })
       headers = {"CONTENT_TYPE" => "application/json"}
 
-      patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+      patch "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate(booking_params)
 
       expect(response).to_not be_successful
       expect(response.code).to eq("404")

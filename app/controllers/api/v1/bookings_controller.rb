@@ -24,6 +24,6 @@ class Api::V1::BookingsController < ApplicationController
   private
 
   def booking_params
-    params.require(:booking).permit(:yard_id, :renter_email, :renter_id, :status, :booking_name, :date, :time, :duration, :description)
+    params.permit(:yard_id, :renter_email, :renter_id, :status, :booking_name, :date, :time, :duration, :description)
   end
 end
