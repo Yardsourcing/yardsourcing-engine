@@ -87,7 +87,7 @@ RSpec.describe 'Bookings API SPEC'do
           })
 
         headers = {"CONTENT_TYPE" => "application/json"}
-        
+
         post "/api/v1/bookings", headers: headers, params: JSON.generate(booking_params)
         created_booking = Booking.last
 
@@ -151,7 +151,7 @@ RSpec.describe 'Bookings API SPEC'do
         booking_params = { status: :rejected }
         headers = {"CONTENT_TYPE" => "application/json"}
 
-        put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate({booking: booking_params})
+        put "/api/v1/bookings/#{id}", headers: headers, params: JSON.generate(booking_params)
 
         booking = Booking.find_by(id: id)
         expect(response).to be_successful
