@@ -21,7 +21,7 @@ class EmailService
   end
 
   def self.send_email(to, from, subject, content)
-    response = connection.post('/api/v1/mail') do |req|
+    connection.post('/api/v1/mail') do |req|
       req.headers["CONTENT_TYPE"] = "application/json"
       req.params = {to: to, from: from, subject: subject, content: content}
     end
