@@ -10,22 +10,12 @@ class EmailService
     send_email(to, from, subject, content)
   end
 
-  def self.approved_booking(booking_id)
+  def self.update_booking(booking_id, status)
     booking = Booking.find(booking_id)
     to = booking.renter_email
     from = booking.yard.email
-    subject = "You're request tor rent #{booking.yard.name}, has been approved!"
-    content = "your request has been approved!\nDetails:\n(booking details)"
-
-    send_email(to, from, subject, content)
-  end
-
-  def self.rejected_booking(booking_id)
-    booking = Booking.find(booking_id)
-    to = booking.renter_email
-    from = booking.yard.email
-    subject = "You're request tor rent #{booking.yard.name}, has been rejected."
-    content = "your request has been rejected!\nDetails:\n(booking details)"
+    subject = "You're request tor rent #{booking.yard.name}, has been #{status}."
+    content = "your request has been #{status}!\nDetails:\n(booking details)"
 
     send_email(to, from, subject, content)
   end

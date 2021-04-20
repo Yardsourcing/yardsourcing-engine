@@ -17,11 +17,7 @@ class Api::V1::BookingsController < ApplicationController
   def update
     booking = Booking.find(params[:id])
     booking.update!(booking_params)
-    if booking.approved?
-      EmailService.approved_booking(booking.id)
-    elsif booking.rejected?
-      EmailService.rejected_booking(booking.id)
-    end
+    EmailService.update_booking(booking.id, booking.status) unless booking.pending?
     render json: BookingSerializer.new(booking)
   end
 
