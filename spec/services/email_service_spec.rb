@@ -9,8 +9,36 @@ RSpec.describe EmailService do
           from = "someone@domain.com"
           subject = "new booking created!"
           content = "a new booking has been created, click here to approve, or click here to reject"
-          method_call = EmailService.send_email(to, from, subject, content)
-          expect(method_call).to eq(true)
+          response = EmailService.send_email(to, from, subject, content)
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(response.status).to eq(202)
+          expect(body[:message]).to eq("Message sent successfully")
+        end
+      end
+    end
+
+    describe ".new_booking" do
+      it "make an api call to YS Microservice when called" do
+        VCR.use_cassette('new_booking_email') do
+          yard = create(:yard, id: 1)
+          booking = create(:booking, id: 1, yard_id: yard.id)
+          response = EmailService.new_booking(booking.id)
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(response.status).to eq(202)
+          expect(body[:message]).to eq("Message sent successfully")
+        end
+      end
+    end
+
+    describe ".Approved_booking" do
+      it "make an api call to YS Microservice when called" do
+        VCR.use_cassette('approved_booking_email') do
+          yard = create(:yard, id: 1)
+          booking = create(:booking, id: 1, yard_id: yard.id)
+          response = EmailService.update_booking(booking.id, "approved")
+          body = JSON.parse(response.body, symbolize_names: true)
+          expect(response.status).to eq(202)
+          expect(body[:message]).to eq("Message sent successfully")
         end
       end
     end

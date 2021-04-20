@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://peaceful-bastion-57477.herokuapp.com/api/v1/mail?content=a%20new%20booking%20has%20been%20created,%20click%20here%20to%20approve,%20or%20click%20here%20to%20reject&from=someone@domain.com&subject=new%20booking%20created!&to=doug.welchons@gmail.com
+    uri: https://peaceful-bastion-57477.herokuapp.com/api/v1/mail?content=your%20request%20has%20been%20approved!%0ADetails:%0A(booking%20details)&from=host_email@domain.com&subject=You%27re%20request%20tor%20rent%20My%20Yard,%20has%20been%20approved.&to=email@domain.com
     body:
       encoding: UTF-8
       string: ''
@@ -33,11 +33,11 @@ http_interactions:
       Server:
       - WEBrick/1.4.2 (Ruby/2.5.3/2018-10-18)
       Date:
-      - Tue, 20 Apr 2021 00:15:07 GMT
+      - Tue, 20 Apr 2021 00:15:03 GMT
       Via:
       - 1.1 vegur
     body:
       encoding: UTF-8
       string: '{"message":"Message sent successfully"}'
-  recorded_at: Tue, 20 Apr 2021 00:15:07 GMT
+  recorded_at: Tue, 20 Apr 2021 00:15:03 GMT
 recorded_with: VCR 6.0.0
