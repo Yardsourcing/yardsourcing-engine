@@ -3,7 +3,8 @@ Purpose.destroy_all
 YardPurpose.destroy_all
 Yard.destroy_all
 
-yard1 = Yard.create(host_id: 1,
+yard1 = Yard.create(id: 2,
+                    host_id: 1,
                     email: "email@domain.com",
                     name: 'Ultimate Party Yard',
                     street_address: '123 4th St',
@@ -17,7 +18,8 @@ yard1 = Yard.create(host_id: 1,
                     photo_url_1: 'https://i.pinimg.com/originals/33/68/61/33686194d9ec6fff887d4a77b33fab26.jpg',
                     photo_url_2: '',
                     photo_url_3: '')
-yard2 = Yard.create(host_id: 1,
+yard2 = Yard.create(id: 3,
+                    host_id: 1,
                     email: "email@domain.com",
                     name: 'Large Yard for any Hobby',
                     street_address: '20 Main St',
@@ -31,7 +33,8 @@ yard2 = Yard.create(host_id: 1,
                     photo_url_1: '',
                     photo_url_2: '',
                     photo_url_3: '')
-yard3 = Yard.create(host_id: 2,
+yard3 = Yard.create(id: 4,
+                    host_id: 2,
                     email: "my_email@domain.com",
                     name: 'Multipurpose Yard',
                     street_address: '320 Seattle Lane',
@@ -45,7 +48,8 @@ yard3 = Yard.create(host_id: 2,
                     photo_url_1: '',
                     photo_url_2: '',
                     photo_url_3: '')
-yard4 = Yard.create(host_id: 3,
+yard4 = Yard.create(id:5,
+                    host_id: 3,
                     email: "another_email@domain.com",
                     name: "A Pet's Dream",
                     street_address: '4855 Frisco Lane',
@@ -60,7 +64,8 @@ yard4 = Yard.create(host_id: 3,
                     photo_url_2: '',
                     photo_url_3: '')
 
-yard5 = Yard.create(host_id: 3,
+yard5 = Yard.create(id:6,
+                    host_id: 3,
                     email: "another_email@domain.com",
                     name: 'Country ',
                     street_address: '10 Highway 64',
@@ -147,3 +152,7 @@ yard5.bookings.create(renter_id: 3,
                       time: Time.new(2021,04,25,20).strftime("%H:%M"),
                       duration: 8,
                       description: 'Trying to throw a rager with my friends.')
+
+ActiveRecord::Base.connection.tables.each do |t|
+  ActiveRecord::Base.connection.reset_pk_sequence!(t)
+end
