@@ -1,5 +1,5 @@
 class Api::V1::BookingsController < ApplicationController
-  before_action :validate_params, only: :show
+  before_action :validate_id, only: :show
 
   def show
     booking = Booking.find(params[:id])
@@ -7,13 +7,17 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   def create
-    booking = Booking.create!(booking_params)
-    render json: BookingSerializer.new(booking), status: :created
+    booking = Booking.new(booking_params)
+    if booking.save!
+      EmailService.new_booking(booking.id)
+      render json: BookingSerializer.new(booking), status: :created
+    end
   end
 
   def update
     booking = Booking.find(params[:id])
     booking.update!(booking_params)
+    EmailService.update_booking(booking.id, booking.status) unless booking.pending?
     render json: BookingSerializer.new(booking)
   end
 
@@ -22,13 +26,8 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   private
-  def validate_params
-    if params[:id].to_i == 0
-      render json: {error: "String not accepted as id"}, status: :bad_request
-    end
-  end
 
   def booking_params
-    params.require(:booking).permit(:yard_id, :renter_email, :renter_id, :status, :booking_name, :date, :time, :duration, :description)
+    params.permit(:yard_id, :renter_email, :renter_id, :status, :booking_name, :date, :time, :duration, :description)
   end
 end

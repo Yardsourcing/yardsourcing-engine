@@ -1,7 +1,7 @@
 class Api::V1::Yards::SearchController < ApplicationController
-  before_action :validate_search_params, only: :index
+  before_action :validate_search_params, only: :search
 
-  def index
+  def search
     yards = if params[:purposes]
               Yard.by_zipcode_and_purposes(params[:location], params[:purposes]).page params[:page]
             else

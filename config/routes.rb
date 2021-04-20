@@ -4,24 +4,22 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :purposes, only: [:index]
 
-      get '/yards/yard_search', to: 'yards/search#index'
-      get '/yards/:id/bookings', to: 'yards/bookings#index'
-      resources :yards, except: [:index] do
-        # resources :bookings, only: [:index]
+      namespace :yards do
+        get '/yard_search', to: 'search#search'
+        get '/:id/bookings', to: 'bookings#index'
       end
+
+      resources :yards, except: [:index]
 
       resources :bookings, only: [:show, :create, :update, :destroy]
 
       resources :hosts, only: [] do
-        resources :yards, only: [:index]
+        resources :yards, only: :index
+        resources :bookings, controller: "hosts/bookings", only: :index
       end
 
-      namespace :renters do
-        get '/:renter_id/bookings', to: 'bookings#index'
-      end
-
-      namespace :hosts do
-        get '/:host_id/bookings', to: 'bookings#index'
+      resources :renters , only: [] do
+        resources :bookings, controller: "renters/bookings", only: :index
       end
     end
   end
