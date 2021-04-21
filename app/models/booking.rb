@@ -44,5 +44,7 @@ class Booking < ApplicationRecord
   def self.find_by_host(host_id)
     joins(:yard)
     .where('yards.host_id = ?', host_id)
+    .where('date >= ?', Date.today)
+    .order('date')
   end
 end
