@@ -94,18 +94,18 @@ RSpec.describe Booking, type: :model do
 
     it 'returns bookings by host_id and status after todays date in upcoming order' do
       yard = create(:yard, host_id: 1)
-      booking = create(:booking, status: :pending, yard_id: yard.id)
-      booking2 = create(:booking, status: :pending, yard_id: yard.id)
-      booking3 = create(:booking, status: :pending, yard_id: yard.id)
-      expect(Booking.find_by_host_and_status(1, 'pending')).to eq([booking])
+      booking = create(:booking, status: :pending, yard_id: yard.id, date: Date.new(2021, 9, 01))
+      booking2 = create(:booking, status: :pending, yard_id: yard.id, date: Date.new(2021, 5, 01))
+      booking3 = create(:booking, status: :approved, yard_id: yard.id, date: Date.new(2021, 6, 01))
+      expect(Booking.find_by_host_and_status(1, 'pending')).to eq([booking2, booking])
     end
 
-    it 'returns bookings by host_id' do
+    it 'returns bookings by host_id after todays date in upcoming order' do
       yard = create(:yard, host_id: 1)
-      booking1 = create(:booking, status: :pending, yard_id: yard.id)
-      booking2 = create(:booking, status: :approved, yard_id: yard.id)
-      booking3 = create(:booking, status: :rejected, yard_id: yard.id)
-      expect(Booking.find_by_host(1)).to eq([booking1, booking2, booking3])
+      booking1 = create(:booking, status: :pending, yard_id: yard.id, date: Date.new(2021, 9, 01))
+      booking2 = create(:booking, status: :approved, yard_id: yard.id, date: Date.new(2021, 5, 01))
+      booking3 = create(:booking, status: :rejected, yard_id: yard.id, date: Date.new(2021, 6, 01))
+      expect(Booking.find_by_host(1)).to eq([booking2, booking3, booking1])
     end
 
     it 'should throw an error if the email is not in the standard format' do
