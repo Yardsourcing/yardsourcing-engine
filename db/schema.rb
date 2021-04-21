@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_003659) do
     t.index ["yard_id"], name: "index_yard_purposes_on_yard_id"
   end
 
-  create_table "yards", force: :cascade do |t|
+  create_table "yards", force: :cascade do|t|
     t.integer "host_id"
     t.string "name"
     t.string "street_address"
