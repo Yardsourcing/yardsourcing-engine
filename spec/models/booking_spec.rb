@@ -58,9 +58,9 @@ RSpec.describe Booking, type: :model do
       expect(Booking.find_by_renter_and_status(1, 'pending')).to eq([booking])
     end
     it 'returns bookings after todays date in upcoming order ' do
-      booking2 = create(:booking, status: :approved, date: Date.new(2021, 05, 01))
-      booking3 = create(:booking, status: :pending, date: Date.new(2021, 8, 01))
-      booking = create(:booking, status: :pending, date: Date.new(2021, 7, 01))
+      booking2 = create(:booking, status: :approved, date: (Date.today + 10))
+      booking3 = create(:booking, status: :pending, date: (Date.today + 15))
+      booking = create(:booking, status: :pending, date: (Date.today + 20))
       expect(Booking.find_by_renter_and_status(1, 'pending')).to eq([booking, booking3])
     end
 
@@ -72,9 +72,9 @@ RSpec.describe Booking, type: :model do
     end
 
     it 'returns bookings after todays date in upcoming order' do
-      booking1 = create(:booking, status: :pending, date: Date.new(2021, 9, 01))
-      booking2 = create(:booking, status: :approved, date: Date.new(2021, 6, 01))
-      booking3 = create(:booking, status: :rejected, date: Date.new(2021, 5, 01))
+      booking1 = create(:booking, status: :pending, date: (Date.today + 20))
+      booking2 = create(:booking, status: :approved, date: (Date.today + 10))
+      booking3 = create(:booking, status: :rejected, date: (Date.today + 15))
       expect(Booking.find_by_renter(1)).to eq([booking3, booking2, booking1])
     end
 
@@ -94,17 +94,17 @@ RSpec.describe Booking, type: :model do
 
     it 'returns bookings by host_id and status after todays date in upcoming order' do
       yard = create(:yard, host_id: 1)
-      booking = create(:booking, status: :pending, yard_id: yard.id, date: Date.new(2021, 9, 01))
-      booking2 = create(:booking, status: :pending, yard_id: yard.id, date: Date.new(2021, 5, 01))
-      booking3 = create(:booking, status: :approved, yard_id: yard.id, date: Date.new(2021, 6, 01))
+      booking = create(:booking, status: :pending, yard_id: yard.id, date: (Date.today + 10))
+      booking2 = create(:booking, status: :pending, yard_id: yard.id, date: (Date.today + 20))
+      booking3 = create(:booking, status: :approved, yard_id: yard.id, date: (Date.today + 15))
       expect(Booking.find_by_host_and_status(1, 'pending')).to eq([booking2, booking])
     end
 
     it 'returns bookings by host_id after todays date in upcoming order' do
       yard = create(:yard, host_id: 1)
-      booking1 = create(:booking, status: :pending, yard_id: yard.id, date: Date.new(2021, 9, 01))
-      booking2 = create(:booking, status: :approved, yard_id: yard.id, date: Date.new(2021, 5, 01))
-      booking3 = create(:booking, status: :rejected, yard_id: yard.id, date: Date.new(2021, 6, 01))
+      booking1 = create(:booking, status: :pending, yard_id: yard.id, date: (Date.today + 10))
+      booking2 = create(:booking, status: :approved, yard_id: yard.id, date: (Date.today + 20))
+      booking3 = create(:booking, status: :rejected, yard_id: yard.id, date: (Date.today + 15))
       expect(Booking.find_by_host(1)).to eq([booking2, booking3, booking1])
     end
 
