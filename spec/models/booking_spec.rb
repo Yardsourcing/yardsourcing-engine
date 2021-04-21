@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Booking, type: :model do
   describe 'relationships' do
     it { should belong_to :yard }
-
   end
 
   describe 'validations' do
@@ -58,8 +57,21 @@ RSpec.describe Booking, type: :model do
       booking = create(:booking, status: :pending)
       expect(Booking.find_by_renter_and_status(1, 'pending')).to eq([booking])
     end
+    it 'returns bookings after todays date in upcoming order ' do
+      booking2 = create(:booking, status: :approved, date: Date.new(2021, 05, 01))
+      booking3 = create(:booking, status: :pending, date: Date.new(2021, 8, 01))
+      booking = create(:booking, status: :pending, date: Date.new(2021, 7, 01))
+      expect(Booking.find_by_renter_and_status(1, 'pending')).to eq([booking, booking3])
+    end
 
     it 'returns bookings by renter_id' do
+      booking1 = create(:booking, status: :pending)
+      booking2 = create(:booking, status: :approved)
+      booking3 = create(:booking, status: :rejected)
+      expect(Booking.find_by_renter(1)).to eq([booking1, booking2, booking3])
+    end
+
+    it 'returns bookings after todays date in upcoming order' do
       booking1 = create(:booking, status: :pending)
       booking2 = create(:booking, status: :approved)
       booking3 = create(:booking, status: :rejected)
