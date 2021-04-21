@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://peaceful-bastion-57477.herokuapp.com/api/v1/mail?content=Someone%20wants%20to%20rent%20your%20Yard!%0ADetails:%0A(booking%20details)&from=email@domain.com&subject=New%20booking%20request%20for%20My%20Yard&to=host_email@domain.com
+    uri: https://peaceful-bastion-57477.herokuapp.com/api/v1/mail?content=Someone%20wants%20to%20rent%20your%20Yard!%0A%20You%20can%20view%20you%20dashboard%20here:%20https://boiling-ridge-68487.herokuapp.com/%20%0ADetails:%0A(booking%20details)&from=email@domain.com&subject=New%20booking%20request%20for%20My%20Yard&to=host_email@domain.com
     body:
       encoding: UTF-8
       string: ''
@@ -33,11 +33,11 @@ http_interactions:
       Server:
       - WEBrick/1.4.2 (Ruby/2.5.3/2018-10-18)
       Date:
-      - Tue, 20 Apr 2021 00:15:03 GMT
+      - Wed, 21 Apr 2021 20:34:41 GMT
       Via:
       - 1.1 vegur
     body:
       encoding: UTF-8
       string: '{"message":"Message sent successfully"}'
-  recorded_at: Tue, 20 Apr 2021 00:15:03 GMT
+  recorded_at: Wed, 21 Apr 2021 20:34:41 GMT
 recorded_with: VCR 6.0.0

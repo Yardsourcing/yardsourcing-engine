@@ -33,11 +33,11 @@ http_interactions:
       Server:
       - WEBrick/1.4.2 (Ruby/2.5.3/2018-10-18)
       Date:
-      - Tue, 20 Apr 2021 00:15:04 GMT
+      - Wed, 21 Apr 2021 20:34:42 GMT
       Via:
       - 1.1 vegur
     body:
       encoding: UTF-8
       string: '{"message":"Message sent successfully"}'
-  recorded_at: Tue, 20 Apr 2021 00:15:04 GMT
+  recorded_at: Wed, 21 Apr 2021 20:34:42 GMT
 recorded_with: VCR 6.0.0

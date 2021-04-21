@@ -5,7 +5,7 @@ class EmailService
     to = booking.yard.email
     from = booking.renter_email
     subject = "New booking request for #{booking.yard.name}"
-    content = "Someone wants to rent your Yard!\nDetails:\n(booking details)"
+    content = "Someone wants to rent your Yard!\n You can view you dashboard here: https://boiling-ridge-68487.herokuapp.com/ \nDetails:\n(booking details)"
 
     send_email(to, from, subject, content)
   end
