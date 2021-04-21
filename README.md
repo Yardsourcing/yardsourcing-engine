@@ -9,9 +9,6 @@ To explore the full web application, please visit the built out front end applic
 To set up automatic email confirmation, please visit the Sendgrid microservice.
   - [Sendgrid Microservice](https://github.com/Yardsourcing/yardsourcing-sendgrid)
 
-
-Have you ever been sitting in your apartment wishing you could bask in the sun on a lawn chair sipping a nice cool beverage? Now you can and you don't even need to leave your city! Yardsourcing is a web application that allows users to create accounts, browse yards available for rent or list your own outdoor space! Whether you need a pet friendly yard, a party yard or a place to do your outdoor hobby - Yardsourcing has you covered!
-
 ### Created by:
 - [Alexa Morales Smyth](https://github.com/amsmyth1) | [LinkedIn](https://www.linkedin.com/in/moralesalexa/)
 - [Genevieve Nuebel](https://github.com/Gvieve) | [LinkedIn](https://www.linkedin.com/in/genevieve-nuebel)
@@ -29,6 +26,7 @@ Have you ever been sitting in your apartment wishing you could bask in the sun o
 
 This project was tested with:
 * RSpec version 3.10
+* [Postman](https://www.postman.com/) Explore and test the API endpoints using Postman, and use Postman’s CLI to execute collections directly from the command-line.
 
 ## Contents
 - [Getting Started](#getting-started)
@@ -46,7 +44,7 @@ This project was tested with:
 
 ### Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system. Endpoints can be added. If you plan to use this engine with the frontend web application, if the endpoints are changed subsequent updates will be necessary on the Frontend repository code.
 
 #### Prerequisites
 
@@ -86,6 +84,13 @@ These instructions will get you a copy of the project up and running on your loc
   $ rails db:{create,migrate,seed}
   ```
 
+4. Set up Environment Variables
+  - run `bundle exec figaro install`
+  - add the below variables to the `config/application.yml`
+  ```
+    EMAIL_MICROSERVICE: 'https://peaceful-bastion-57477.herokuapp.com'
+  ```
+
   If you do not wish to use the sample data provided to seed your database, replace the commands in `db/seeds.rb` and the data dump file in `db/data/rails-engine-development.pgdump`.
 
 ### Endpoints
@@ -105,15 +110,11 @@ These instructions will get you a copy of the project up and running on your loc
 | GET | /api/v1/bookings/:booking_id | Get booking show page |
 | DELETE | /api/v1/bookings/:booking_id | Delete a new booking |
 
-
+### Project Architecture
+<p style="text-align:center;"><img src="ys_design.png" width="600"></p>
 
 ### Database Schema
-
-<img src="Schema_yardsourcing.png" width="400">
-
-### Application Features
-##### Feature 1
-- Some really good info
+<p style="text-align:center;"><img src="Schema_yardsourcing.png" height="350"></p>
 
 ### Testing
 ##### Running Tests
