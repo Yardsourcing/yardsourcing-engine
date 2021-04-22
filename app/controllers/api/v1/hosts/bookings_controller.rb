@@ -10,10 +10,7 @@ class Api::V1::Hosts::BookingsController < ApplicationController
                 else
                   Booking.find_by_host(host_id).page params[:page]
                 end
-    if bookings.empty?
-      render json: NullSerializer.new
-    else
-      render json: BookingSerializer.new(bookings)
-    end
+    return render json: NullSerializer.new if bookings.empty?
+    render json: BookingSerializer.new(bookings)
   end
 end
