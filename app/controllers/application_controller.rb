@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
   end
 
   private
-  
+
   def validate_id
     id = :"#{params.keys.grep(/id/)[0]}"
     error = "String not accepted as id"

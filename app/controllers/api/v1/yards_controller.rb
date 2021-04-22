@@ -26,6 +26,9 @@ class Api::V1::YardsController < ApplicationController
 
   def destroy
     yard = Yard.find(params[:id])
+    if yard.bookings.active_bookings.count > 0
+      return render_error("Can't delete a yard with active bookings", :not_acceptable)
+    end
     render json: Yard.destroy(params[:id])
   end
 

@@ -108,6 +108,14 @@ RSpec.describe Booking, type: :model do
       expect(Booking.find_by_host(1)).to eq([booking2, booking3, booking1])
     end
 
+    it 'returns bookings that are approved and a date in the future' do
+      yard = create(:yard, host_id: 1)
+      booking1 = create(:booking, status: :approved, yard_id: yard.id, date: (Date.today + 20))
+      booking2 = create(:booking, status: :approved, yard_id: yard.id, date: (Date.today + 10))
+      booking3 = create(:booking, status: :rejected, yard_id: yard.id, date: (Date.today))
+      expect(Booking.active_bookings).to eq([booking1, booking2])
+    end
+
     it 'should throw an error if the email is not in the standard format' do
       yard = create(:yard)
       booking = yard.bookings.new(
