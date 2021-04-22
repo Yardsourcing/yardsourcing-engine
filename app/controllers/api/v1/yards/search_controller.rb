@@ -2,11 +2,7 @@ class Api::V1::Yards::SearchController < ApplicationController
   before_action :validate_search_params, only: :search
 
   def search
-    yards = if params[:purposes]
-              Yard.by_zipcode_and_purposes(params[:location], params[:purposes]).page params[:page]
-            else
-              Yard.by_zipcode(params[:location]).page params[:page]
-            end
+    yards = YardsSearchFacade.make_search(params)
     render json: YardSerializer.new(yards)
   end
 
