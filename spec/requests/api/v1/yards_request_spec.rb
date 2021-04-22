@@ -355,5 +355,20 @@ RSpec.describe "Yards API Endpoints" do
       expect(Yard.count).to eq(0)
       expect{Yard.find(yard.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it "can't destroy an yard that has active bookings" do
+      yard = create(:yard)
+      booking1 = create(:booking, status: :approved, yard_id: yard.id, date: (Date.today + 20))
+      booking2 = create(:booking, status: :approved, yard_id: yard.id, date: (Date.today + 10))
+
+      expect(Yard.count).to eq(1)
+
+      delete "/api/v1/yards/#{yard.id}"
+      returned_json = JSON.parse(response.body, symbolize_names: true)
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(:not_acceptable)
+      expect(returned_json[:error]).to be_a(String)
+      expect(returned_json[:error]).to eq("Can't delete a yard with active bookings")
+    end
   end
 end

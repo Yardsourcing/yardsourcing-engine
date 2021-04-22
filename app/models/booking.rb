@@ -1,5 +1,5 @@
 class Booking < ApplicationRecord
-  belongs_to :yard
+  belongs_to :yard, dependent: :destroy
   validates_presence_of :booking_name,
                         :date,
                         :time,
@@ -46,5 +46,10 @@ class Booking < ApplicationRecord
     .where('yards.host_id = ?', host_id)
     .where('date >= ?', Date.today)
     .order('date')
+  end
+
+  def self.active_bookings
+    where('date >= ?', Date.today)
+    .where(status: :approved)
   end
 end
