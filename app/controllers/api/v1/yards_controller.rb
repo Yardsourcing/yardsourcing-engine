@@ -2,41 +2,26 @@ class Api::V1::YardsController < ApplicationController
   before_action :validate_id, only: [:index, :show]
 
   def index
-    yards = Yard.where(host_id: params[:host_id]).page params[:page]
+    yards = YardsFacade.find_yards(params[:host_id], params[:page])
     render json: YardSerializer.new(yards)
   end
 
   def show
     yard = Yard.where(id: params[:id])
-    if yard.empty?
-      render json: NullSerializer.new
-    else
-      render json: YardSerializer.new(Yard.find(params[:id]))
-    end
+    return render json: NullSerializer.new if yard.empty?
+    render json: YardSerializer.new(Yard.find(params[:id]))
   end
 
   def create
-    if yard_purposes
-      yard = Yard.create!(yard_params)
-      create_yard_purposes(yard)
-      render json: YardSerializer.new(yard), status: :created
-    else
-      error = "You must select at least one purpose"
-      render_error(error, :not_acceptable)
-    end
+    yard = YardsFacade.create_yard(yard_params, params[:purposes])
+    return render_error(yard[:error], :not_acceptable) if yard[:error]
+    render json: YardSerializer.new(yard), status: :created
   end
 
   def update
-    yard = Yard.find(params[:id])
-    if yard_purposes
-      yard.update!(yard_params)
-      create_yard_purposes(yard)
-      YardPurpose.destroy(yard.yard_purposes.find_unselected_purposes(yard_purposes))
-      render json: YardSerializer.new(yard)
-    else
-      error = "You must select at least one purpose"
-      render_error(error, :not_acceptable)
-    end
+    yard = YardsFacade.update_yard(params[:id], yard_params, params[:purposes])
+    return render_error(yard[:error], :not_acceptable) if yard[:error]
+    render json: YardSerializer.new(yard)
   end
 
   def destroy
@@ -44,17 +29,7 @@ class Api::V1::YardsController < ApplicationController
     render json: Yard.destroy(params[:id])
   end
 
-  def create_yard_purposes(yard)
-    yard_purposes&.each do |purpose_id|
-      YardPurpose.create(yard_id: yard.id, purpose_id: purpose_id)
-    end
-  end
-
   private
-
-  def yard_purposes
-    params[:purposes]
-  end
 
   def yard_params
     params.permit(:host_id,
