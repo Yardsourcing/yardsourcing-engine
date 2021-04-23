@@ -112,7 +112,11 @@ These instructions will get you a copy of the project up and running on your loc
 | GET | /api/v1/bookings/:booking_id | Get booking show page |
 | DELETE | /api/v1/bookings/:booking_id | Delete a new booking |
 
+#### API Contract
 Please see the [API Documentation](https://github.com/Yardsourcing/yardsourcing-engine/blob/main/APIContract.md) for detailed information about each endpoint, existing parameters, and expected json data input and output.
+
+#### Postman
+- Utilize this [link](https://www.getpostman.com/collections/de993f8fcc4c974d68a2) to download the postman suite
 
 ### Project Architecture
 <p style="text-align:center;"><img src="ys_design.png" width="600"></p>
