@@ -116,7 +116,10 @@ These instructions will get you a copy of the project up and running on your loc
 Please see the [API Documentation](https://github.com/Yardsourcing/yardsourcing-engine/blob/main/APIContract.md) for detailed information about each endpoint, existing parameters, and expected json data input and output.
 
 #### Postman
+- To run postman endpoints, start the Yardsourcing engine in locally
+    `rails s -p 3001`
 - Utilize this [link](https://www.getpostman.com/collections/de993f8fcc4c974d68a2) to download the postman suite
+
 
 ### Project Architecture
 <p style="text-align:center;"><img src="ys_design.png" width="600"></p>
