@@ -1,6 +1,6 @@
 # Yardsourcing Engine
 
-This is the backend engine fueling Yardsourcing, a web application that connects hosts with users looking to rent a yard. The application is built with service oriented architecture and this app does most of the heavy lifting (see the [Project Architecture](#project-architecture) section for overview). The backend communicates with the frontend (see related repos) using 14 API JSON endpoints. It stores all but the user information in the database.
+This is the backend engine fueling Yardsourcing, a web application that connects hosts with users looking to rent a yard. The application is built with service oriented architecture and this app does most of the heavy lifting (see [Project Architecture](#project-architecture)). The backend communicates with the frontend using 14 API JSON endpoints. It stores all but the user information in the database.
 
 The API endpoints allow other apps to store Yards (with full CRUD functionality), search yards by address and status, create, approve, reject, or cancel bookings associated to a yard, as well as view all host or renter upcoming bookings. There is automatic email functionality that ties into our Sinatra Sendgrid API Microservice that confirms bookings and approvals from hosts. To utilize this functionality, please set up the Sendgrid Microservice (see related repos).
 
