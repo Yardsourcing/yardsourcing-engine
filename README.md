@@ -1,18 +1,20 @@
 # Yardsourcing Engine
 
-This is the engine fueling Yardsourcing, the web application. This API has 14 endpoints that allow Google authenticated users to store Yards (with full CRUD functionality), search yards by address and status, create and cancel bookings, and view all upcoming bookings. There is automatic email functionality that confirms bookings and approvals from hosts. To utilize this functionality, please set up the Sendgrid Microservice (see related repos).
+This is the backend engine fueling Yardsourcing, a web application that connects hosts with users looking to rent a yard. The application is built with service oriented architecture and this app does most of the heavy lifting (see the [Project Architecture](#project-architecture) section for overview). The backend communicates with the frontend (see related repos) using 14 API JSON endpoints. It stores all but the user information in the database.
 
-#### Related Repos
+The API endpoints allow other apps to store Yards (with full CRUD functionality), search yards by address and status, create, approve, reject, or cancel bookings associated to a yard, as well as view all host or renter upcoming bookings. There is automatic email functionality that ties into our Sinatra Sendgrid API Microservice that confirms bookings and approvals from hosts. To utilize this functionality, please set up the Sendgrid Microservice (see related repos).
+
+### Related Repos
 To explore the full web application, please visit the built out front end application that hooks into this engine and its endpoints.
- - [Yardsourcing - frontend](https://github.com/Yardsourcing/yardsourcing-frontend).
+ - [Yardsourcing - frontend](https://github.com/Yardsourcing/yardsourcing-frontend#readme).
 
 To set up automatic email confirmation, please visit the Sendgrid microservice.
-  - [Sendgrid Microservice](https://github.com/Yardsourcing/yardsourcing-sendgrid)
+  - [Sendgrid Microservice](https://github.com/Yardsourcing/yardsourcing-sendgrid#readme)
 
 ### Created by:
 - [Alexa Morales Smyth](https://github.com/amsmyth1) | [LinkedIn](https://www.linkedin.com/in/moralesalexa/)
 - [Genevieve Nuebel](https://github.com/Gvieve) | [LinkedIn](https://www.linkedin.com/in/genevieve-nuebel)
-- [Dominic Padula]() | [LinkedIn]()
+- [Dominic Padula](https://github.com/domo2192) | [LinkedIn](https://www.linkedin.com/in/dominic-padula-5bb5b2179/)
 - [Jenny Branham](https://github.com/jbranham1) | [LinkedIn](https://www.linkedin.com/in/jenny-branham)
 - [Jordan Beck](https://github.com/jordanfbeck0528) | [LinkedIn](https://www.linkedin.com/in/jordan-f-beck/)
 - [Angel Breaux](https://github.com/abreaux26) | [LinkedIn](https://www.linkedin.com/in/angel-breaux)
@@ -21,8 +23,6 @@ To set up automatic email confirmation, please visit the Sendgrid microservice.
 #### Built With
 * [Ruby on Rails](https://rubyonrails.org)
 * [HTML](https://html.com)
-* [JavaScript](https://www.javascript.com)
-* [Bootstrap](https://getbootstrap.com/)
 
 This project was tested with:
 * RSpec version 3.10
@@ -33,6 +33,7 @@ This project was tested with:
   - [Prerequisites](#prerequisites)
   - [Installing](#installing)
 - [Endpoints](#endpoints)  
+- [Project Architecture](#project-architecture)  
 - [Database Schema](#database-schema)  
 - [Application Features](#application-features)
   - [Feature 1](#feature-1)
@@ -60,12 +61,13 @@ These instructions will get you a copy of the project up and running on your loc
 * __Postgres database__
   - Visit the [postgresapp](https://postgresapp.com/downloads.html) homepage and follow their instructions to download the latest version of Postgres app.
 
+#### Frontend dependancies
+
 * __Google Oauth API__
   - Visit the [google developer tools](https://console.developers.google.com/project) to create an account and follow the instructions to create a project for your server to obtain a client_id and client_secret.
 
 * __Omniauth for Rails__
   Visit the [google api omniauth](https://www.twilio.com/blog/2014/09/gmail-api-oauth-rails.html) homepage and follow their instructions to get familiar with how to use Omniauth in a rails application.
-
 
 #### Installing
 
@@ -84,14 +86,14 @@ These instructions will get you a copy of the project up and running on your loc
   $ rails db:{create,migrate,seed}
   ```
 
-4. Set up Environment Variables
+4. Set up Environment Variables:
   - run `bundle exec figaro install`
-  - add the below variables to the `config/application.yml`
+  - add the below variable to the `config/application.yml` if you wish to use the existing email microservice. Otherwise you replace it the value with service if desired.
   ```
     EMAIL_MICROSERVICE: 'https://peaceful-bastion-57477.herokuapp.com'
   ```
 
-  If you do not wish to use the sample data provided to seed your database, replace the commands in `db/seeds.rb` and the data dump file in `db/data/rails-engine-development.pgdump`.
+  If you do not wish to use the sample data provided to seed your database, replace the commands in `db/seeds.rb`.
 
 ### Endpoints
 | HTTP verbs | Paths  | Used for |
@@ -109,6 +111,8 @@ These instructions will get you a copy of the project up and running on your loc
 | POST | /api/v1/bookings | Create a new booking |
 | GET | /api/v1/bookings/:booking_id | Get booking show page |
 | DELETE | /api/v1/bookings/:booking_id | Delete a new booking |
+
+Please see the [API Documentation](https://github.com/Yardsourcing/yardsourcing-engine/blob/main/APIContract.md) for detailed information about each endpoint, existing parameters, and expected json data input and output.
 
 ### Project Architecture
 <p style="text-align:center;"><img src="ys_design.png" width="600"></p>
@@ -140,12 +144,12 @@ In the spirit of collaboration, things done together are better than done on our
 
 ### Roadmap
 
-See the [open issues](https://github.com/Yardsourcing/yardsourcing-frontend/issues) for a list of proposed features (and known issues). Please open an issue ticket if you see an existing error or bug.
+See the [open issues](https://github.com/Yardsourcing/yardsourcing-engine/issues) for a list of proposed features (and known issues). Please open an issue ticket if you see an existing error or bug.
 
 ### Contributors
 - [Alexa Morales Smyth](https://github.com/amsmyth1)
 - [Genevieve Nuebel](https://github.com/Gvieve)
-- [Dominic Padula]() [LinkedIn]()
+- [Dominic Padula](https://github.com/domo2192)
 - [Jenny Branham](https://github.com/jbranham1)
 - [Jordan Beck](https://github.com/jordanfbeck0528)
 - [Angel Breaux](https://github.com/abreaux26)
