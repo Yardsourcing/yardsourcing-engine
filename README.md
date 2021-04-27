@@ -96,21 +96,13 @@ These instructions will get you a copy of the project up and running on your loc
   If you do not wish to use the sample data provided to seed your database, replace the commands in `db/seeds.rb`.
 
 ### Endpoints
-| HTTP verbs | Paths  | Used for |
-| ---------- | ------ | --------:|
-| GET | /api/v1/purposes | Get the available purposes |
-| GET | /api/v1/yards/:yard_id  | Get a yard's show page |
-| POST | /api/v1/yards  | Create a new yard |
-| DELETE | /api/v1/yards/:yard_id  | Delete a yard |
-| PUT | /api/v1/yards/:yard_id | Update a yard |
-| GET | /api/v1/hosts/host_id/bookings?status=STATUS | Get all bookings for a host that have a particular status|
-| GET | /api/v1/renters/renter_id/bookings?status=STATUS | Get all bookings for a renter that have a particular status|
-| GET | /api/v1/yards?location=ZIP&purposes=PURPOSE+NAME&OTHER+PURPOSE+NAME  | Get yards that match search criteria. |
-| GET | /api/v1/hosts/host_id/yards  | Get yards that belong to a host |
-| GET | /api/v1/yards/:yard_id/bookings | Get bookings that belong to a specific yard |
-| POST | /api/v1/bookings | Create a new booking |
-| GET | /api/v1/bookings/:booking_id | Get booking show page |
-| DELETE | /api/v1/bookings/:booking_id | Delete a new booking |
+| HTTP verbs | Paths  |Required| Used for |Tips|
+| ---------- | ------ | ------ |------| --------:|
+| GET | /api/v1/forecast?location=denver,co |valid city passed in as location| Get the weather for a location |
+| GET | /api/v1/backgrounds?location=denver,co|valid location for area| Get a photo for a specific area|
+| POST | /api/v1/users  | Valid email, password, and confirmation| Create a user account ||Must Pass required Json in body|
+| Post| /api/v1/sessions  | valid email and password |Create a session get an api_key|Must Pass required as Json in body|
+| Post| /api/v1/road_trip |Must pass valid origin/desitnation/api_key| Creates a road trip |Must required as Json in body|
 
 #### API Contract
 Please see the [API Documentation](https://github.com/Yardsourcing/yardsourcing-engine/blob/main/APIContract.md) for detailed information about each endpoint, existing parameters, and expected json data input and output.
