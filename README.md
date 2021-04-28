@@ -23,6 +23,7 @@ To set up automatic email confirmation, please visit the Sendgrid microservice.
 #### Built With
 * [Ruby on Rails](https://rubyonrails.org)
 * [HTML](https://html.com)
+* [RSpec](https://html.com)
 
 This project was tested with:
 * RSpec version 3.10
@@ -98,34 +99,16 @@ These instructions will get you a copy of the project up and running on your loc
 ### Endpoints
 | HTTP verbs | Paths  | Used for |
 | ---------- | ------ | --------:|
-| GET | /api/v1/purposes | Get the available purposes |
-| GET | /api/v1/yards/:yard_id  | Get a yard's show page |
-| POST | /api/v1/yards  | Create a new yard |
-| DELETE | /api/v1/yards/:yard_id  | Delete a yard |
-| PUT | /api/v1/yards/:yard_id | Update a yard |
-| GET | /api/v1/hosts/host_id/bookings?status=STATUS | Get all bookings for a host that have a particular status|
-| GET | /api/v1/renters/renter_id/bookings?status=STATUS | Get all bookings for a renter that have a particular status|
-| GET | /api/v1/yards?location=ZIP&purposes=PURPOSE+NAME&OTHER+PURPOSE+NAME  | Get yards that match search criteria. |
-| GET | /api/v1/hosts/host_id/yards  | Get yards that belong to a host |
-| GET | /api/v1/yards/:yard_id/bookings | Get bookings that belong to a specific yard |
-| POST | /api/v1/bookings | Create a new booking |
-| GET | /api/v1/bookings/:booking_id | Get booking show page |
-| DELETE | /api/v1/bookings/:booking_id | Delete a new booking |
+| GET | /api/v1/forecast | Get a minute, hour and day forecast |
+| GET | /api/v1/backgrounds  | Get a background image |
+| POST | /api/v1/users  | Create a new user |
+| POST | /api/v1/sessions  | Create a session |
+| POST | /api/v1/road_trip | Create a road trip |
+
 
 #### API Contract
-Please see the [API Documentation](https://github.com/Yardsourcing/yardsourcing-engine/blob/main/APIContract.md) for detailed information about each endpoint, existing parameters, and expected json data input and output.
+Please see the [API Documentation](In Progress) for detailed information about each endpoint, existing parameters, and expected json data input and output.
 
-#### Postman
-- To run postman endpoints, start the Yardsourcing engine in locally
-    `rails s -p 3001`
-- Utilize this [link](https://www.getpostman.com/collections/de993f8fcc4c974d68a2) to download the postman suite
-
-
-### Project Architecture
-<p style="text-align:center;"><img src="ys_design.png" width="600"></p>
-
-### Database Schema
-<p style="text-align:center;"><img src="Schema_yardsourcing.png" height="350"></p>
 
 ### Testing
 ##### Running Tests
@@ -137,35 +120,3 @@ $ bundle exec rspec
 ```
 $ bundle exec rspec <file path>
 ```
-for example: `bundle exec rspec spec/features/host/dashboard/index_spec.rb`
-
-### How to Contribute
-
-In the spirit of collaboration, things done together are better than done on our own. If you have any amazing ideas or contributions on how we can improve this API they are **greatly appreciated**. To contribute:
-
-  1. Fork the Project
-  2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-  3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-  4. Push to the Branch (`git push origin feature/AmazingFeature`)
-  5. Open a Pull Request
-
-### Roadmap
-
-See the [open issues](https://github.com/Yardsourcing/yardsourcing-engine/issues) for a list of proposed features (and known issues). Please open an issue ticket if you see an existing error or bug.
-
-### Contributors
-- [Alexa Morales Smyth](https://github.com/amsmyth1)
-- [Genevieve Nuebel](https://github.com/Gvieve)
-- [Dominic Padula](https://github.com/domo2192)
-- [Jenny Branham](https://github.com/jbranham1)
-- [Jordan Beck](https://github.com/jordanfbeck0528)
-- [Angel Breaux](https://github.com/abreaux26)
-- [Doug Welchons](https://github.com/DougWelchons/)
-
-  See also the list of
-  [contributors](https://github.com/Yardsourcing/yardsourcing-frontend/graphs/contributors)
-  who participated in this project.
-
-### Acknowledgments
-  - Our fantastically wizard like Project Manager and Instructor at [Turing School of Software and Design](https://turing.io/):
-    * Ian Douglas
